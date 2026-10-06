@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, Outlet, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { Menu, X, Shield, ChevronUp } from 'lucide-react';
-import { LANDING_SITE_URL, STATUS_PAGE_URL, DEVELOPER_PORTAL_URL } from '@autional-cn/shared';
-import { ThemeToggle, LanguageSwitcher } from '@autional-cn/ui';
+import { LANDING_SITE_URL, STATUS_PAGE_URL, DEVELOPER_PORTAL_URL } from '@autional/shared';
+import { ThemeToggle, LanguageSwitcher } from '@autional/ui';
 
 export default function TrustLayout() {
 	const { t } = useTranslation();

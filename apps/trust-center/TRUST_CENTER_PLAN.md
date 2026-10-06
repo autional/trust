@@ -26,7 +26,7 @@ Trust Center 是 Autional 面向 B2B 客户、安全审计员和潜在采购决�
 | 国际化 i18n | ✅ 基础设施就绪，TrustLayout + Overview 已翻译 |
 | 主题切换 | ✅ 暗色/亮色模式 |
 | SEO / OpenGraph | ✅ canonical、OG、Twitter Card、JSON-LD |
-| @autional-cn/ui 组件 | ✅ 新增 4 个组件（PageHeader、EmptyState、StatusBadge、SectionCard） |
+| @autional/ui 组件 | ✅ 新增 4 个组件（PageHeader、EmptyState、StatusBadge、SectionCard） |
 
 ### 2.2 已知缺口
 
@@ -109,7 +109,7 @@ GET /audit/public/stats
 
 **ErrorBoundary**: 页面级错误捕获，显示友好错误页（而非白屏）。
 
-**Toast**: 轻量级 toast 通知（成功/失败/警告），不引入 Ant Design，使用 `@autional-cn/ui` 自研。
+**Toast**: 轻量级 toast 通知（成功/失败/警告），不引入 Ant Design，使用 `@autional/ui` 自研。
 
 ---
 
@@ -164,7 +164,7 @@ npx openapi-typescript http://localhost:11080/swagger.json -o src/types/api.d.ts
 - 当前 Vite SPA + React Query 的缓存策略已足够（staleTime: 5min）
 - 如需 SEO 优化，可通过 `vite-plugin-ssr` 或 `prerender` 后期引入，不阻塞当前交付
 
-### 4.2 为什么 @autional-cn/ui 不引入 Radix UI？
+### 4.2 为什么 @autional/ui 不引入 Radix UI？
 
 - 当前 Trust Center 所需组件（Badge、Card、Header）均为纯样式组件，无复杂交互
 - Radix UI 的引入会增加 ~50KB bundle，ROI 不成正比

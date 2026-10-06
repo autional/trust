@@ -1,8 +1,8 @@
-import { usePageTitle, usePageMeta } from '@autional-cn/shared';
+import { usePageTitle, usePageMeta } from '@autional/shared';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { getSubprocessors } from '@/lib/api.generated';
-import { PageHeader, StatusBadge, EmptyState } from '@autional-cn/ui';
+import { PageHeader, StatusBadge, EmptyState } from '@autional/ui';
 import { Server, Globe, Shield, Database, Loader2, AlertTriangle, Building2 } from 'lucide-react';
 
 export default function SubprocessorsPage() {

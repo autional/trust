@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router';
-import { usePageTitle, usePageMeta } from '@autional-cn/shared';
-import { notificationsPublicSecurityUnsubscribePost } from '@autional-cn/shared/generated/api';
+import { usePageTitle, usePageMeta } from '@autional/shared';
+import { notificationsPublicSecurityUnsubscribePost } from '@autional/shared/generated/api';
 import { CheckCircle2, XCircle, Loader2, Mail, ArrowLeft, Bell } from 'lucide-react';
 
 type UnsubscribeState = 'idle' | 'submitting' | 'success' | 'fail' | 'noToken';

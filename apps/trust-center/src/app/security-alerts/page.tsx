@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useSEO } from '@autional-cn/shared';
-import { notificationsPublicSecuritySubscribePost } from '@autional-cn/shared/generated/api';
+import { useSEO } from '@autional/shared';
+import { notificationsPublicSecuritySubscribePost } from '@autional/shared/generated/api';
 import { useTranslation } from 'react-i18next';
 import { Bell, Mail, CheckCircle2, AlertTriangle, ArrowRight, Shield, Loader2 } from 'lucide-react';
 

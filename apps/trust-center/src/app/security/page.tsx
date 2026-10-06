@@ -1,4 +1,4 @@
-import { usePageTitle, usePageMeta } from '@autional-cn/shared';
+import { usePageTitle, usePageMeta } from '@autional/shared';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import {

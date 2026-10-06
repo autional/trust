@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import { usePageTitle, usePageMeta } from '@autional-cn/shared';
+import { usePageTitle, usePageMeta } from '@autional/shared';
 import { Shield, Search, ArrowLeft } from 'lucide-react';
 
 export default function NotFoundPage() {

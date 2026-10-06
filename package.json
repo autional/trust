@@ -1,15 +1,15 @@
 {
-  "name": "@autional-cn/trust",
+  "name": "@autional/trust",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "pnpm --filter @autional-cn/trust-center dev",
-    "build": "pnpm --filter @autional-cn/trust-center... build",
-    "preview": "pnpm --filter @autional-cn/trust-center preview",
-    "typecheck": "pnpm --filter @autional-cn/trust-center typecheck",
-    "lint": "pnpm --filter @autional-cn/trust-center lint",
-    "test": "pnpm --filter @autional-cn/trust-center test"
+    "dev": "pnpm --filter @autional/trust-center dev",
+    "build": "pnpm --filter @autional/trust-center... build",
+    "preview": "pnpm --filter @autional/trust-center preview",
+    "typecheck": "pnpm --filter @autional/trust-center typecheck",
+    "lint": "pnpm --filter @autional/trust-center lint",
+    "test": "pnpm --filter @autional/trust-center test"
   },
   "packageManager": "pnpm@11.0.8",
   "engines": {

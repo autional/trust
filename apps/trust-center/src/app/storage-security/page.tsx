@@ -1,10 +1,10 @@
 'use client';
 
-import { usePageTitle, usePageMeta } from '@autional-cn/shared';
+import { usePageTitle, usePageMeta } from '@autional/shared';
 import { useStorageEncryptionStatus } from '@/hooks/use-trust-api';
 import { useTranslation } from 'react-i18next';
-import { PageHeader, SectionCard, LoadingScreen, ErrorState } from '@autional-cn/ui';
-import type { PublicEncryptionStatus } from '@autional-cn/shared/generated/types';
+import { PageHeader, SectionCard, LoadingScreen, ErrorState } from '@autional/ui';
+import type { PublicEncryptionStatus } from '@autional/shared/generated/types';
 import { Shield, Key, Globe, Database } from 'lucide-react';
 
 export default function StorageSecurityPage() {

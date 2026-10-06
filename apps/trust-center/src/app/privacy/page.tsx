@@ -1,4 +1,4 @@
-import { usePageTitle, usePageMeta } from '@autional-cn/shared';
+import { usePageTitle, usePageMeta } from '@autional/shared';
 import { useTranslation } from 'react-i18next';
 import { Lock, Eye, Shield, FileText, Globe, Trash2, UserCheck, Cookie } from 'lucide-react';
 

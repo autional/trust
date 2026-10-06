@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router';
-import { usePageTitle, usePageMeta } from '@autional-cn/shared';
-import { notificationsPublicSecurityConfirm } from '@autional-cn/shared/generated/api';
+import { usePageTitle, usePageMeta } from '@autional/shared';
+import { notificationsPublicSecurityConfirm } from '@autional/shared/generated/api';
 import { CheckCircle2, XCircle, Loader2, ArrowLeft, Bell } from 'lucide-react';
 
 type ConfirmState = 'loading' | 'success' | 'fail' | 'noToken';

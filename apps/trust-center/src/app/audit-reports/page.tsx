@@ -1,6 +1,6 @@
 'use client';
 
-import { usePageTitle, usePageMeta } from '@autional-cn/shared';
+import { usePageTitle, usePageMeta } from '@autional/shared';
 import {
 	usePenTestReports,
 	usePublicAuditStats,
@@ -9,7 +9,7 @@ import {
 	usePublicCertifications,
 } from '@/hooks/use-trust-api';
 import { useTranslation } from 'react-i18next';
-import { PageHeader, SectionCard, EmptyState, LoadingScreen, ErrorState } from '@autional-cn/ui';
+import { PageHeader, SectionCard, EmptyState, LoadingScreen, ErrorState } from '@autional/ui';
 import {
 	FileText,
 	Shield,

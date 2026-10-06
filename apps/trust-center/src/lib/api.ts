@@ -1,4 +1,4 @@
-import { apiClient } from '@autional-cn/shared';
+import { apiClient } from '@autional/shared';
 
 // All API functions migrated to ./api.generated.ts
 // Re-export for backward compat:

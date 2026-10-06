@@ -1,4 +1,4 @@
-import { useSEO } from '@autional-cn/shared';
+import { useSEO } from '@autional/shared';
 import { useComplianceStatus } from '@/hooks/use-trust-api';
 import { useTranslation } from 'react-i18next';
 import SecurityScore from '@/components/SecurityScore';

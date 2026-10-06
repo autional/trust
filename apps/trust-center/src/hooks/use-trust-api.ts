@@ -14,7 +14,7 @@ import {
 	compliancePublicStatus,
 	compliancePublicSecurityScore,
 	adminAuditStats,
-} from '@autional-cn/shared/generated/api';
+} from '@autional/shared/generated/api';
 
 export function useComplianceStatus() {
 	return useQuery({

@@ -1,11 +1,11 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
-import { ROUTER_BASENAME } from '@autional-cn/shared';
+import { ROUTER_BASENAME } from '@autional/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import './non-tenant-segments';
-import { ThemeProvider, ToastProvider } from '@autional-cn/ui';
+import { ThemeProvider, ToastProvider } from '@autional/ui';
 import './i18n';
 import './index.css';
 
