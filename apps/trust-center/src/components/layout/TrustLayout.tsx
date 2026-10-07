@@ -258,7 +258,7 @@ export default function TrustLayout() {
 						</div>
 					</div>
 					<div className="mt-8 border-t border-neutral-200 pt-8 text-center text-sm text-neutral-400 dark:border-neutral-800 dark:text-neutral-500">
-						© {new Date().getFullYear()} 深圳市天艺网络技术有限公司 粤ICP备08016466号.
+						© {new Date().getFullYear()} Autional.
 					</div>
 				</div>
 			</footer>
