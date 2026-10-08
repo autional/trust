@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --port 13109",
-    "build": "tsc && vite build",
+    "dev": "node ../../scripts/gen-env.mjs && vite --port 13109",
+    "build": "node ../../scripts/gen-env.mjs && tsc && vite build",
     "preview": "vite preview --port 13109",
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit",

@@ -1,6 +1,0 @@
-# Autional security.txt (RFC 9116)
-Contact: mailto:security@autional.net
-Expires: 2027-10-05T00:00:00.000Z
-Preferred-Languages: zh-CN, en
-Canonical: https://trust.autional.cn/.well-known/security.txt
-Policy: https://trust.autional.cn/vulnerability-disclosure
