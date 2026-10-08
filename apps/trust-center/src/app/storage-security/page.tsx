@@ -31,7 +31,7 @@ export default function StorageSecurityPage() {
 
 				{/* Encryption Status */}
 				<SectionCard title={t('storageSecurity.encryptionStatus')} className="mt-8">
-					<p className="mb-6 text-sm text-neutral-500 dark:text-neutral-400">
+					<p className="mb-6 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 						{t('storageSecurity.encryptionDesc')}
 					</p>
 
@@ -85,21 +85,21 @@ function EncryptionCard({
 	enabled: boolean;
 }) {
 	return (
-		<div className="rounded-xl border border-neutral-200 bg-white p-5 dark:border-neutral-700 dark:bg-slate-800">
+		<div className="rounded-xl border border-neutral-200 bg-white p-5 dark:border-neutral-700 dark:bg-surface">
 			<div className="flex items-center gap-3">
 				<div
 					className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
-						enabled ? 'bg-primary-50 dark:bg-primary-900/20' : 'bg-neutral-100 dark:bg-slate-700'
+						enabled ? 'bg-primary-50 dark:bg-primary-900/20' : 'bg-neutral-100 dark:bg-elevated'
 					}`}
 				>
 					<Icon
 						className={`h-5 w-5 ${
-							enabled ? 'text-primary-600' : 'text-neutral-400 dark:text-neutral-500'
+							enabled ? 'text-primary-600' : 'text-[var(--color-text-muted)] dark:text-neutral-500'
 						}`}
 					/>
 				</div>
 				<div className="min-w-0">
-					<div className="text-xs text-neutral-400 dark:text-neutral-500">{label}</div>
+					<div className="text-xs text-[var(--color-text-muted)] dark:text-neutral-500">{label}</div>
 					<div className="mt-0.5 truncate text-sm font-semibold text-neutral-900 dark:text-white">
 						{value}
 					</div>

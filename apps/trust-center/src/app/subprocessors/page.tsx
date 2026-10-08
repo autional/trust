@@ -36,14 +36,14 @@ export default function SubprocessorsPage() {
 				<PageHeader title={t('subprocessors.title')} subtitle={t('subprocessors.subtitle')} />
 
 				{isLoading && (
-					<div className="mt-8 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+					<div className="mt-8 flex items-center gap-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 						<Loader2 className="h-4 w-4 animate-spin" />
 						{t('common.loading')}
 					</div>
 				)}
 
 				{isError && (
-					<div className="mt-8 rounded-xl border border-neutral-200 bg-neutral-50 p-6 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-slate-900/50">
+					<div className="mt-8 rounded-xl border border-neutral-200 bg-neutral-50 p-6 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-surface/50">
 						<AlertTriangle className="mb-2 inline h-5 w-5 text-warning" />
 						<p>{t('common.loadFailed')}</p>
 					</div>
@@ -54,7 +54,7 @@ export default function SubprocessorsPage() {
 						<EmptyState
 							title={t('common.empty')}
 							description={t('subprocessors.emptyDesc')}
-							icon={<Building2 className="h-6 w-6 text-neutral-400" />}
+							icon={<Building2 className="h-6 w-6 text-[var(--color-text-muted)]" />}
 						/>
 					</div>
 				)}
@@ -64,7 +64,7 @@ export default function SubprocessorsPage() {
 						{subprocessors.map((sp: any) => (
 							<div
 								key={sp.id}
-								className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-slate-900"
+								className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-surface"
 							>
 								<div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
 									<div className="flex items-start gap-4">
@@ -76,7 +76,7 @@ export default function SubprocessorsPage() {
 												{sp.entityName}
 											</h3>
 											{sp.applicableServices && (
-												<p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+												<p className="mt-1 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]">
 													{sp.applicableServices}
 												</p>
 											)}
@@ -91,10 +91,10 @@ export default function SubprocessorsPage() {
 
 								<div className="mt-4 grid gap-3 border-t border-neutral-100 pt-4 dark:border-neutral-700 sm:grid-cols-2 lg:grid-cols-3">
 									{sp.locations && (
-										<div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-											<Globe className="h-4 w-4 shrink-0 text-neutral-400" />
+										<div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]">
+											<Globe className="h-4 w-4 shrink-0 text-[var(--color-text-muted)]" />
 											<span>
-												<span className="text-neutral-400 dark:text-neutral-500">
+												<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
 													{t('subprocessors.location')}
 													{i18n.language?.startsWith('zh') ? '\uFF1A' : ': '}
 												</span>
@@ -103,10 +103,10 @@ export default function SubprocessorsPage() {
 										</div>
 									)}
 									{sp.subjectMatter && (
-										<div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-											<Database className="h-4 w-4 shrink-0 text-neutral-400" />
+										<div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]">
+											<Database className="h-4 w-4 shrink-0 text-[var(--color-text-muted)]" />
 											<span>
-												<span className="text-neutral-400 dark:text-neutral-500">
+												<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
 													{t('subprocessors.dataCategories')}
 													{i18n.language?.startsWith('zh') ? '\uFF1A' : ': '}
 												</span>
@@ -115,10 +115,10 @@ export default function SubprocessorsPage() {
 										</div>
 									)}
 									{sp.purpose && (
-										<div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
-											<Shield className="h-4 w-4 shrink-0 text-neutral-400" />
+										<div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]">
+											<Shield className="h-4 w-4 shrink-0 text-[var(--color-text-muted)]" />
 											<span>
-												<span className="text-neutral-400 dark:text-neutral-500">
+												<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
 													{t('subprocessors.certifications')}
 													{i18n.language?.startsWith('zh') ? '\uFF1A' : ': '}
 												</span>

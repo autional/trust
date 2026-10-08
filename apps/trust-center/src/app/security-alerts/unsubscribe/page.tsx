@@ -51,7 +51,7 @@ export default function SecurityAlertsUnsubscribePage() {
 						<h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
 							{t('securityAlerts.unsubscribe.title')}
 						</h1>
-						<p className="mt-3 text-neutral-600 dark:text-neutral-400">
+						<p className="mt-3 text-neutral-600 dark:text-[var(--color-text-muted)]">
 							{t('securityAlerts.unsubscribe.desc')}
 						</p>
 						<p className="mt-2 break-all text-sm font-medium text-neutral-900 dark:text-white">
@@ -79,13 +79,13 @@ export default function SecurityAlertsUnsubscribePage() {
 
 				{state === 'success' && (
 					<>
-						<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-900/30">
-							<CheckCircle2 className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+						<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success-soft/30">
+							<CheckCircle2 className="h-8 w-8 text-success-text" />
 						</div>
 						<h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
 							{t('securityAlerts.unsubscribe.successTitle')}
 						</h1>
-						<p className="mt-3 text-neutral-600 dark:text-neutral-400">
+						<p className="mt-3 text-neutral-600 dark:text-[var(--color-text-muted)]">
 							{t('securityAlerts.unsubscribe.successDesc')}
 						</p>
 					</>
@@ -93,13 +93,13 @@ export default function SecurityAlertsUnsubscribePage() {
 
 				{failed && (
 					<>
-						<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-rose-50 dark:bg-rose-900/30">
-							<XCircle className="h-8 w-8 text-rose-600 dark:text-rose-400" />
+						<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-danger-soft/30">
+							<XCircle className="h-8 w-8 text-danger-text" />
 						</div>
 						<h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
 							{t('securityAlerts.unsubscribe.failTitle')}
 						</h1>
-						<p className="mt-3 text-neutral-600 dark:text-neutral-400">
+						<p className="mt-3 text-neutral-600 dark:text-[var(--color-text-muted)]">
 							{state === 'noToken'
 								? t('securityAlerts.unsubscribe.noToken')
 								: t('securityAlerts.unsubscribe.failDesc')}

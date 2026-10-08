@@ -52,7 +52,7 @@ export default function PrivacyPage() {
 						return (
 							<div
 								key={key}
-								className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-slate-900 sm:p-8"
+								className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-surface sm:p-8"
 							>
 								<div className="flex items-center gap-3">
 									<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 dark:bg-primary-900/20">
@@ -78,7 +78,7 @@ export default function PrivacyPage() {
 					})}
 				</div>
 
-				<div className="mt-12 rounded-2xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-slate-900/50 sm:p-8">
+				<div className="mt-12 rounded-2xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-surface/50 sm:p-8">
 					<div className="flex items-center gap-3">
 						<Shield className="h-6 w-6 text-primary-600" />
 						<h2 className="text-lg font-bold text-neutral-900 dark:text-white">
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
 					</p>
 					<div className="mt-4 space-y-2 text-sm text-neutral-700 dark:text-neutral-300">
 						<div>
-							<span className="text-neutral-500 dark:text-neutral-400">
+							<span className="text-neutral-500 dark:text-[var(--color-text-muted)]">
 								{t('privacy.dpoEmail')}
 							</span>
 							<a href="#" className="text-primary-600 hover:underline dark:text-primary-400">
@@ -98,7 +98,7 @@ export default function PrivacyPage() {
 							</a>
 						</div>
 						<div>
-							<span className="text-neutral-500 dark:text-neutral-400">
+							<span className="text-neutral-500 dark:text-[var(--color-text-muted)]">
 								{t('privacy.dpoAddress')}
 							</span>
 							{t('privacy.dpoAddressText')}
@@ -106,7 +106,7 @@ export default function PrivacyPage() {
 					</div>
 				</div>
 
-				<div className="mt-8 text-center text-xs text-neutral-500 dark:text-neutral-500">
+				<div className="mt-8 text-center text-xs text-neutral-500">
 					{t('privacy.lastUpdated')}
 					{i18n.language?.startsWith('zh') ? '\uFF1A' : ': '}
 					{t('privacy.updatedDate')}

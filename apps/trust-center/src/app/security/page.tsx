@@ -57,7 +57,7 @@ export default function SecurityPage() {
 						return (
 							<div
 								key={p.titleKey}
-								className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-slate-900 sm:p-8"
+								className="rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-surface sm:p-8"
 							>
 								<div className="flex items-center gap-4">
 									<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-900/20">
@@ -74,7 +74,7 @@ export default function SecurityPage() {
 									{items.map((item) => (
 										<li
 											key={item}
-											className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-400"
+											className="flex items-start gap-2 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]"
 										>
 											<Lock className="mt-0.5 h-4 w-4 shrink-0 text-primary-500" />
 											{item}
@@ -94,7 +94,7 @@ export default function SecurityPage() {
 						{programs.map((prog) => (
 							<div
 								key={prog.titleKey}
-								className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-slate-900"
+								className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-surface"
 							>
 								<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 dark:bg-primary-900/20">
 									<prog.icon className="h-5 w-5 text-primary-600" />
@@ -102,7 +102,7 @@ export default function SecurityPage() {
 								<h3 className="mt-4 text-base font-semibold text-neutral-900 dark:text-white">
 									{t(`security.${prog.titleKey}`)}
 								</h3>
-								<p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+								<p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-[var(--color-text-muted)]">
 									{t(`security.${prog.descKey}`)}
 								</p>
 							</div>
@@ -110,7 +110,7 @@ export default function SecurityPage() {
 					</div>
 				</div>
 
-				<div className="mt-12 rounded-xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-slate-900/50">
+				<div className="mt-12 rounded-xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-surface/50">
 					<div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div>
 							<h3 className="text-base font-semibold text-neutral-900 dark:text-white">

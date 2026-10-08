@@ -37,11 +37,11 @@ export default function IncidentsPage() {
 				<div className="mt-10">
 					<SectionCard className="text-center" padding="md">
 						<div className="text-3xl font-bold text-success">{dataBreachCount}</div>
-						<div className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+						<div className="mt-1 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]">
 							{t('incidents.stats.breaches')}
 						</div>
 						{breachLoading && (
-							<Loader2 className="mx-auto mt-2 h-4 w-4 animate-spin text-neutral-400" />
+							<Loader2 className="mx-auto mt-2 h-4 w-4 animate-spin text-[var(--color-text-muted)]" />
 						)}
 					</SectionCard>
 				</div>
@@ -51,19 +51,19 @@ export default function IncidentsPage() {
 					<h2 className="text-xl font-bold text-neutral-900 dark:text-white">
 						{t('incidents.breachNotifications')}
 					</h2>
-					<p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+					<p className="mt-1 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 						{t('incidents.breachDesc')}
 					</p>
 
 					{breachLoading && (
-						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 							<Loader2 className="h-4 w-4 animate-spin" />
 							{t('incidents.loadingBreaches')}
 						</div>
 					)}
 
 					{breachError && (
-						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-slate-900/50">
+						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-surface/50">
 							<AlertTriangle className="mb-1 inline h-4 w-4" />
 							{t('incidents.breachesLoadFailed')}
 						</div>
@@ -84,7 +84,7 @@ export default function IncidentsPage() {
 								return (
 									<SectionCard key={breach.id} padding="lg">
 										<div className="flex flex-wrap items-center gap-3">
-											<span className="font-mono text-xs text-neutral-500 dark:text-neutral-400">
+											<span className="font-mono text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
 												BREACH-{breach.id.slice(0, 8).toUpperCase()}
 											</span>
 											<StatusBadge variant={variant}>
@@ -99,7 +99,7 @@ export default function IncidentsPage() {
 										<h3 className="mt-2 text-lg font-bold text-neutral-900 dark:text-white">
 											{breach.title}
 										</h3>
-										<div className="mt-1 flex items-center gap-1 text-xs text-neutral-500 dark:text-neutral-400">
+										<div className="mt-1 flex items-center gap-1 text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
 											<Clock className="h-3.5 w-3.5" />
 											{breach.createdAt}
 										</div>
@@ -107,7 +107,7 @@ export default function IncidentsPage() {
 											{breach.description}
 										</p>
 										<div className="mt-3 text-sm text-neutral-600 dark:text-neutral-300">
-											<span className="text-neutral-400 dark:text-neutral-500">
+											<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
 												{t('common.affectedUsers')}
 											</span>
 											{breach.affectedUsers ?? '—'}
@@ -143,13 +143,13 @@ export default function IncidentsPage() {
 								<h3 className="mt-2 text-base font-semibold text-neutral-900 dark:text-white">
 									{s.title}
 								</h3>
-								<p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">{s.desc}</p>
+								<p className="mt-2 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]">{s.desc}</p>
 							</SectionCard>
 						))}
 					</div>
 				</div>
 
-				<div className="mt-12 rounded-xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-slate-900/50">
+				<div className="mt-12 rounded-xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-surface/50">
 					<div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div>
 							<h3 className="text-base font-semibold text-neutral-900 dark:text-white">

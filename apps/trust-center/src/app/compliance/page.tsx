@@ -52,7 +52,7 @@ export default function CompliancePage() {
 
 				{/* Dynamic Compliance Score */}
 				{publicScore != null && (
-					<div className="mt-8 rounded-xl border border-primary-200 bg-gradient-to-br from-primary-50 to-white p-6 dark:border-primary-800 dark:from-primary-900/20 dark:to-slate-900">
+					<div className="mt-8 rounded-xl border border-primary-200 bg-gradient-to-br from-primary-50 to-white p-6 dark:border-primary-800 dark:from-primary-900/20 dark:to-surface">
 						<div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
 							<div className="flex items-center gap-4">
 								<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-100 dark:bg-primary-800">
@@ -62,14 +62,14 @@ export default function CompliancePage() {
 									<h2 className="text-lg font-bold text-neutral-900 dark:text-white">
 										{t('compliance.liveScore', '实时合规评分')}
 									</h2>
-									<p className="text-sm text-neutral-500 dark:text-neutral-400">
+									<p className="text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 										{t('compliance.liveScoreDesc', '当前系统的安全合规指标综合评分')}
 									</p>
 								</div>
 							</div>
 							<div className="flex items-baseline gap-2">
 								<span className="text-4xl font-bold text-primary-600">{publicScore}</span>
-								<span className="text-lg text-neutral-400">/ 100</span>
+								<span className="text-lg text-[var(--color-text-muted)]">/ 100</span>
 							</div>
 						</div>
 						{publicStandards.length > 0 && (
@@ -107,7 +107,7 @@ export default function CompliancePage() {
 												{cert.framework || cert.auditor}
 											</h2>
 											{cert.lastAuditedDate && (
-												<span className="text-xs text-neutral-500 dark:text-neutral-400">
+												<span className="text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
 													{t('common.lastAudited')}
 													{cert.lastAuditedDate}
 												</span>
@@ -157,19 +157,19 @@ export default function CompliancePage() {
 					<h2 className="text-xl font-bold text-neutral-900 dark:text-white">
 						{t('compliance.latestFindings')}
 					</h2>
-					<p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+					<p className="mt-1 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 						{t('compliance.findingsDesc')}
 					</p>
 
 					{isLoading && (
-						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 							<Loader2 className="h-4 w-4 animate-spin" />
 							{t('compliance.loadingFindings')}
 						</div>
 					)}
 
 					{isError && (
-						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-slate-900/50">
+						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-surface/50">
 							<AlertTriangle className="mb-1 inline h-4 w-4" />
 							{t('compliance.findingsLoadFailed')}
 						</div>
@@ -190,7 +190,7 @@ export default function CompliancePage() {
 								return (
 									<div
 										key={finding.id}
-										className="flex flex-col gap-2 rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-slate-900 sm:flex-row sm:items-center sm:justify-between"
+										className="flex flex-col gap-2 rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-surface sm:flex-row sm:items-center sm:justify-between"
 									>
 										<div className="flex-1">
 											<div className="flex flex-wrap items-center gap-2">
@@ -200,13 +200,13 @@ export default function CompliancePage() {
 												<StatusBadge variant={variant}>{finding.severity}</StatusBadge>
 												<StatusBadge variant="neutral">{finding.status}</StatusBadge>
 											</div>
-											<p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+											<p className="mt-1 text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
 												{t('common.controlType')}
 												{finding.controlType} · {t('common.controlId')}
 												{finding.controlId}
 											</p>
 										</div>
-										<div className="text-xs text-neutral-400 dark:text-neutral-500">
+										<div className="text-xs text-[var(--color-text-muted)] dark:text-neutral-500">
 											{t('common.dueDate')}
 											{finding.dueDate || '—'}
 										</div>

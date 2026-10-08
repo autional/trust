@@ -91,13 +91,13 @@ export default function OverviewPage() {
 
 				{/* Dynamic Compliance Status Banner */}
 				{isLoading && (
-					<div className="mt-8 flex items-center justify-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+					<div className="mt-8 flex items-center justify-center gap-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 						<Loader2 className="h-4 w-4 animate-spin" />
 						{t('overview.loadingStatus')}
 					</div>
 				)}
 				{status && !isError && (
-					<div className="mt-8 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-slate-900">
+					<div className="mt-8 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-surface">
 						<div className="flex flex-wrap items-center justify-between gap-4">
 							<div className="flex items-center gap-3">
 								<div
@@ -115,7 +115,7 @@ export default function OverviewPage() {
 											? t('common.realTimeLabel')
 											: t('overview.statusBuilding')}
 									</div>
-									<div className="text-xs text-neutral-500 dark:text-neutral-400">
+									<div className="text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
 										{t('overview.lastAuditLine', {
 											date: status.lastAuditDate || '\u2014',
 											count: status.openIssues ?? 0,
@@ -125,17 +125,17 @@ export default function OverviewPage() {
 							</div>
 							<div className="flex flex-wrap gap-2">
 								<span
-									className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${status.iso27001Compliant ? 'bg-success/10 text-success' : 'bg-neutral-100 text-neutral-500 dark:bg-slate-800'}`}
+									className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${status.iso27001Compliant ? 'bg-success/10 text-success' : 'bg-neutral-100 text-neutral-500 dark:bg-surface'}`}
 								>
 									{status.iso27001Compliant && <CheckCircle2 className="h-3 w-3" />} ISO 27001
 								</span>
 								<span
-									className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${status.soxCompliant ? 'bg-success/10 text-success' : 'bg-neutral-100 text-neutral-500 dark:bg-slate-800'}`}
+									className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${status.soxCompliant ? 'bg-success/10 text-success' : 'bg-neutral-100 text-neutral-500 dark:bg-surface'}`}
 								>
 									{status.soxCompliant && <CheckCircle2 className="h-3 w-3" />} SOX
 								</span>
 								<span
-									className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${status.gdprCompliant ? 'bg-success/10 text-success' : 'bg-neutral-100 text-neutral-500 dark:bg-slate-800'}`}
+									className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${status.gdprCompliant ? 'bg-success/10 text-success' : 'bg-neutral-100 text-neutral-500 dark:bg-surface'}`}
 								>
 									{status.gdprCompliant && <CheckCircle2 className="h-3 w-3" />} GDPR
 								</span>
@@ -144,7 +144,7 @@ export default function OverviewPage() {
 					</div>
 				)}
 				{isError && (
-					<div className="mt-8 rounded-xl border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-slate-900/50">
+					<div className="mt-8 rounded-xl border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-surface/50">
 						<AlertTriangle className="mb-1 inline h-4 w-4" />
 						{t('overview.loadFailed')}
 					</div>
@@ -162,7 +162,7 @@ export default function OverviewPage() {
 						return (
 							<div
 								key={cert.name}
-								className="rounded-xl border border-neutral-200 bg-white p-6 text-center shadow-sm transition-all hover:shadow-md dark:border-neutral-800 dark:bg-slate-900"
+								className="rounded-xl border border-neutral-200 bg-white p-6 text-center shadow-sm transition-all hover:shadow-md dark:border-neutral-800 dark:bg-surface"
 							>
 								<div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary-50 dark:bg-primary-900/20">
 									<Icon className="h-6 w-6 text-primary-600" />
@@ -170,10 +170,10 @@ export default function OverviewPage() {
 								<h3 className="mt-4 text-lg font-semibold text-neutral-900 dark:text-white">
 									{cert.name}
 								</h3>
-								<span className="mt-1 inline-block rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-500 dark:bg-slate-800 dark:text-neutral-400">
+								<span className="mt-1 inline-block rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-500 dark:bg-surface dark:text-[var(--color-text-muted)]">
 									{cert.status}
 								</span>
-								<p className="mt-3 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+								<p className="mt-3 text-sm leading-relaxed text-neutral-600 dark:text-[var(--color-text-muted)]">
 									{cert.desc}
 								</p>
 							</div>
@@ -204,7 +204,7 @@ export default function OverviewPage() {
 								<Link
 									key={key}
 									to={href}
-									className="group rounded-xl border border-neutral-200 bg-white p-6 shadow-sm transition-all hover:border-primary-200 hover:shadow-md dark:border-neutral-800 dark:bg-slate-900 dark:hover:border-primary-800"
+									className="group rounded-xl border border-neutral-200 bg-white p-6 shadow-sm transition-all hover:border-primary-200 hover:shadow-md dark:border-neutral-800 dark:bg-surface dark:hover:border-primary-800"
 								>
 									<div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 text-primary-600 transition-colors group-hover:bg-primary-100 dark:bg-primary-900/20 dark:group-hover:bg-primary-900/30">
 										<Icon className="h-5 w-5" />
@@ -212,7 +212,7 @@ export default function OverviewPage() {
 									<h3 className="mt-4 text-lg font-semibold text-neutral-900 dark:text-white">
 										{pillar.title}
 									</h3>
-									<p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+									<p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-[var(--color-text-muted)]">
 										{pillar.desc}
 									</p>
 									<span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary-600 dark:text-primary-400">
@@ -226,7 +226,7 @@ export default function OverviewPage() {
 				</div>
 
 				{/* Quick Links */}
-				<div className="mt-20 rounded-2xl border border-neutral-200 bg-neutral-50 p-8 dark:border-neutral-800 dark:bg-slate-900/50">
+				<div className="mt-20 rounded-2xl border border-neutral-200 bg-neutral-50 p-8 dark:border-neutral-800 dark:bg-surface/50">
 					<h2 className="text-center text-2xl font-bold text-neutral-900 dark:text-white">
 						{t('overview.quickLinks')}
 					</h2>
@@ -240,7 +240,7 @@ export default function OverviewPage() {
 								<Link
 									key={key}
 									to={`/${key === 'complianceDetail' ? 'compliance' : key === 'auditCompliance' ? 'audit-reports' : key === 'dataResidency' ? 'data-residency' : 'incidents'}`}
-									className="group flex items-start gap-4 rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:border-primary-200 hover:shadow-sm dark:border-neutral-800 dark:bg-slate-900 dark:hover:border-primary-800"
+									className="group flex items-start gap-4 rounded-xl border border-neutral-200 bg-white p-5 transition-all hover:border-primary-200 hover:shadow-sm dark:border-neutral-800 dark:bg-surface dark:hover:border-primary-800"
 								>
 									<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/20">
 										<ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
@@ -249,7 +249,7 @@ export default function OverviewPage() {
 										<h3 className="text-base font-semibold text-neutral-900 dark:text-white">
 											{link.title}
 										</h3>
-										<p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">
+										<p className="mt-1 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]">
 											{link.desc}
 										</p>
 									</div>
@@ -268,7 +268,7 @@ export default function OverviewPage() {
 						{checklistItems.map((item: string) => (
 							<div
 								key={item}
-								className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white px-4 py-3 dark:border-neutral-800 dark:bg-slate-900"
+								className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white px-4 py-3 dark:border-neutral-800 dark:bg-surface"
 							>
 								<span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary-500" />
 								<span className="text-sm text-neutral-700 dark:text-neutral-300">{item}</span>

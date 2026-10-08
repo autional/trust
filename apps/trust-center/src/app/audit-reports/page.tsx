@@ -76,20 +76,20 @@ export default function AuditReportsPage() {
 						<ErrorState onRetry={() => refetchStats()} />
 					) : statsData ? (
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-							<div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+							<div className="text-center p-4 bg-neutral-50 dark:bg-surface rounded-lg">
 								<div className="text-3xl font-bold text-primary-600">
 									{Number(statsData.totalLogs).toLocaleString()}
 								</div>
-								<div className="text-sm text-gray-500 mt-1">{t('audit.totalEvents')}</div>
+								<div className="text-sm text-[var(--color-text-muted)] mt-1">{t('audit.totalEvents')}</div>
 							</div>
 							{Object.entries(statsData.byModule || {})
 								.slice(0, 3)
 								.map(([k, v]) => (
-									<div key={k} className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+									<div key={k} className="text-center p-4 bg-neutral-50 dark:bg-surface rounded-lg">
 										<div className="text-3xl font-bold text-primary-600">
 											{Number(v).toLocaleString()}
 										</div>
-										<div className="text-sm text-gray-500 mt-1">{k}</div>
+										<div className="text-sm text-[var(--color-text-muted)] mt-1">{k}</div>
 									</div>
 								))}
 						</div>
@@ -106,18 +106,18 @@ export default function AuditReportsPage() {
 						<div className="space-y-4">
 							<div className="flex items-center justify-center gap-3 text-sm font-mono">
 								<span
-									className="rounded bg-gray-100 dark:bg-gray-800 px-3 py-1.5 text-gray-600 dark:text-gray-300"
+									className="rounded bg-neutral-100 dark:bg-surface px-3 py-1.5 text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]"
 									title={hashChainData.startHash}
 								>
 									{hashChainData.startHash}
 								</span>
-								<ArrowRight className="h-4 w-4 text-gray-400" />
-								<span className="rounded bg-gray-100 dark:bg-gray-800 px-3 py-1.5 text-gray-400">
+								<ArrowRight className="h-4 w-4 text-[var(--color-text-muted)]" />
+								<span className="rounded bg-neutral-100 dark:bg-surface px-3 py-1.5 text-[var(--color-text-secondary)]">
 									...
 								</span>
-								<ArrowRight className="h-4 w-4 text-gray-400" />
+								<ArrowRight className="h-4 w-4 text-[var(--color-text-muted)]" />
 								<span
-									className="rounded bg-gray-100 dark:bg-gray-800 px-3 py-1.5 text-gray-600 dark:text-gray-300"
+									className="rounded bg-neutral-100 dark:bg-surface px-3 py-1.5 text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]"
 									title={hashChainData.endHash}
 								>
 									{hashChainData.endHash}
@@ -125,27 +125,27 @@ export default function AuditReportsPage() {
 								<CheckCircle2 className="h-5 w-5 text-success" />
 							</div>
 							<div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-								<div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-									<div className="text-lg font-semibold text-gray-700 dark:text-gray-200">
+								<div className="text-center p-3 bg-neutral-50 dark:bg-surface rounded-lg">
+									<div className="text-lg font-semibold text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]">
 										{Number(hashChainData.logCount).toLocaleString()}
 									</div>
-									<div className="text-xs text-gray-500">{t('audit.logCount')}</div>
+									<div className="text-xs text-[var(--color-text-muted)]">{t('audit.logCount')}</div>
 								</div>
-								<div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-									<div className="text-xs text-gray-500">{t('audit.startHash')}</div>
-									<div className="text-xs font-mono text-gray-700 dark:text-gray-300 mt-1 break-all">
+								<div className="text-center p-3 bg-neutral-50 dark:bg-surface rounded-lg">
+									<div className="text-xs text-[var(--color-text-muted)]">{t('audit.startHash')}</div>
+									<div className="text-xs font-mono text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)] mt-1 break-all">
 										{hashChainData.startHash}
 									</div>
 								</div>
-								<div className="text-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-									<div className="text-xs text-gray-500">{t('audit.endHash')}</div>
-									<div className="text-xs font-mono text-gray-700 dark:text-gray-300 mt-1 break-all">
+								<div className="text-center p-3 bg-neutral-50 dark:bg-surface rounded-lg">
+									<div className="text-xs text-[var(--color-text-muted)]">{t('audit.endHash')}</div>
+									<div className="text-xs font-mono text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)] mt-1 break-all">
 										{hashChainData.endHash}
 									</div>
 								</div>
 							</div>
 							{hashChainData.lastValidated && (
-								<div className="text-center text-xs text-gray-500">
+								<div className="text-center text-xs text-[var(--color-text-muted)]">
 									{t('audit.lastValidated')}: {hashChainData.lastValidated}
 								</div>
 							)}
@@ -161,29 +161,29 @@ export default function AuditReportsPage() {
 						<ErrorState />
 					) : logsSummaryData ? (
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-							<div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+							<div className="text-center p-4 bg-neutral-50 dark:bg-surface rounded-lg">
 								<Activity className="h-5 w-5 text-primary-600 mx-auto mb-1" />
 								<div className="text-2xl font-bold text-primary-600">
 									{Number(logsSummaryData.totalLogs).toLocaleString()}
 								</div>
-								<div className="text-xs text-gray-500 mt-1">{t('audit.totalLogs')}</div>
+								<div className="text-xs text-[var(--color-text-muted)] mt-1">{t('audit.totalLogs')}</div>
 							</div>
-							<div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+							<div className="text-center p-4 bg-neutral-50 dark:bg-surface rounded-lg">
 								<Hash className="h-5 w-5 text-primary-600 mx-auto mb-1" />
 								<div className="text-2xl font-bold text-primary-600">
 									{Number(logsSummaryData.moduleCount).toLocaleString()}
 								</div>
-								<div className="text-xs text-gray-500 mt-1">{t('audit.modules')}</div>
+								<div className="text-xs text-[var(--color-text-muted)] mt-1">{t('audit.modules')}</div>
 							</div>
-							<div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-								<div className="text-xs text-gray-500">{t('audit.activeSince')}</div>
-								<div className="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1">
+							<div className="text-center p-4 bg-neutral-50 dark:bg-surface rounded-lg">
+								<div className="text-xs text-[var(--color-text-muted)]">{t('audit.activeSince')}</div>
+								<div className="text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)] mt-1">
 									{logsSummaryData.activeSince || '—'}
 								</div>
 							</div>
-							<div className="text-center p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-								<div className="text-xs text-gray-500">{t('audit.lastActivity')}</div>
-								<div className="text-sm font-medium text-gray-700 dark:text-gray-300 mt-1">
+							<div className="text-center p-4 bg-neutral-50 dark:bg-surface rounded-lg">
+								<div className="text-xs text-[var(--color-text-muted)]">{t('audit.lastActivity')}</div>
+								<div className="text-sm font-medium text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)] mt-1">
 									{logsSummaryData.lastActivity || '—'}
 								</div>
 							</div>
@@ -196,19 +196,19 @@ export default function AuditReportsPage() {
 					<h2 className="text-xl font-bold text-neutral-900 dark:text-white">
 						{t('auditReports.securityTestReports')}
 					</h2>
-					<p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+					<p className="mt-1 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 						{t('auditReports.securityTestDesc')}
 					</p>
 
 					{isLoading && (
-						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 							<Loader2 className="h-4 w-4 animate-spin" />
 							{t('auditReports.loadingSecurityTests')}
 						</div>
 					)}
 
 					{isError && (
-						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-slate-900/50">
+						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-surface/50">
 							<AlertTriangle className="mb-1 inline h-4 w-4" />
 							{t('auditReports.securityTestLoadFailed')}
 						</div>
@@ -235,21 +235,21 @@ export default function AuditReportsPage() {
 											<p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
 												{report.summary}
 											</p>
-											<div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-500 dark:text-neutral-400">
+											<div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 												<div>
-													<span className="text-neutral-400 dark:text-neutral-500">
+													<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
 														{t('auditReports.labels.conductedAt')}
 													</span>
 													{report.conductedAt}
 												</div>
 												<div>
-													<span className="text-neutral-400 dark:text-neutral-500">
+													<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
 														{t('auditReports.labels.severity')}
 													</span>
 													{report.severity}
 												</div>
 												<div>
-													<span className="text-neutral-400 dark:text-neutral-500">
+													<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
 														{t('auditReports.labels.nextTest')}
 													</span>
 													{report.nextTestDate || '—'}
@@ -279,7 +279,7 @@ export default function AuditReportsPage() {
 					</h2>
 
 					{certsLoading && (
-						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 							<Loader2 className="h-4 w-4 animate-spin" />
 							{t('common.loading')}
 						</div>
@@ -300,7 +300,7 @@ export default function AuditReportsPage() {
 															{cert.framework}
 														</h3>
 														{cert.last_audited_date && (
-															<span className="text-xs text-neutral-500 dark:text-neutral-400">
+															<span className="text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
 																{t('common.lastAudited')}
 																{cert.last_audited_date}
 															</span>
@@ -332,7 +332,7 @@ export default function AuditReportsPage() {
 															<h3 className="text-lg font-bold text-neutral-900 dark:text-white">
 																{report.title}
 															</h3>
-															<span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-500 dark:bg-slate-800 dark:text-neutral-400">
+															<span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-500 dark:bg-surface dark:text-[var(--color-text-muted)]">
 																{report.status}
 															</span>
 														</div>

@@ -58,10 +58,10 @@ export default function DataResidencyPage() {
 				</div>
 
 				{/* Region Map / Table */}
-				<div className="mt-12 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-slate-900">
+				<div className="mt-12 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm dark:border-neutral-800 dark:bg-surface">
 					<div className="overflow-x-auto">
 						<table className="w-full text-left text-sm">
-							<thead className="bg-neutral-50 text-neutral-700 dark:bg-slate-800 dark:text-neutral-300">
+							<thead className="bg-neutral-50 text-neutral-700 dark:bg-surface dark:text-neutral-300">
 								<tr>
 									<th className="px-6 py-4 font-semibold">
 										{t('dataResidency.regionTable.region')}
@@ -89,7 +89,7 @@ export default function DataResidencyPage() {
 													<div className="font-semibold text-neutral-900 dark:text-white">
 														{region.name}
 													</div>
-													<div className="text-xs text-neutral-500 dark:text-neutral-400">
+													<div className="text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
 														{region.code}
 													</div>
 												</div>
@@ -112,7 +112,7 @@ export default function DataResidencyPage() {
 												{region.features.map((f) => (
 													<span
 														key={f}
-														className="inline-block rounded-md bg-neutral-100 px-2 py-1 text-xs text-neutral-600 dark:bg-slate-800 dark:text-neutral-300"
+														className="inline-block rounded-md bg-neutral-100 px-2 py-1 text-xs text-neutral-600 dark:bg-surface dark:text-neutral-300"
 													>
 														{f}
 													</span>
@@ -135,7 +135,7 @@ export default function DataResidencyPage() {
 						{commitments.map((c) => (
 							<div
 								key={c.titleKey}
-								className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-slate-900"
+								className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-surface"
 							>
 								<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 dark:bg-primary-900/20">
 									<c.icon className="h-5 w-5 text-primary-600" />
@@ -143,7 +143,7 @@ export default function DataResidencyPage() {
 								<h3 className="mt-4 text-base font-semibold text-neutral-900 dark:text-white">
 									{t(`dataResidency.${c.titleKey}`)}
 								</h3>
-								<p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+								<p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-[var(--color-text-muted)]">
 									{t(`dataResidency.${c.descKey}`)}
 								</p>
 							</div>
@@ -152,7 +152,7 @@ export default function DataResidencyPage() {
 				</div>
 
 				{/* Checklist */}
-				<div className="mt-16 rounded-2xl border border-neutral-200 bg-neutral-50 p-8 dark:border-neutral-800 dark:bg-slate-900/50">
+				<div className="mt-16 rounded-2xl border border-neutral-200 bg-neutral-50 p-8 dark:border-neutral-800 dark:bg-surface/50">
 					<h2 className="text-center text-2xl font-bold text-neutral-900 dark:text-white">
 						{t('dataResidency.checklist')}
 					</h2>
@@ -160,7 +160,7 @@ export default function DataResidencyPage() {
 						{checklistItems.map((item) => (
 							<div
 								key={item}
-								className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white px-4 py-3 dark:border-neutral-800 dark:bg-slate-900"
+								className="flex items-center gap-3 rounded-lg border border-neutral-200 bg-white px-4 py-3 dark:border-neutral-800 dark:bg-surface"
 							>
 								<span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary-500" />
 								<span className="text-sm text-neutral-700 dark:text-neutral-300">{item}</span>

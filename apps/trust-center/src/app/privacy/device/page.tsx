@@ -19,9 +19,9 @@ export default function DevicePrivacyPage() {
 					</p>
 				</div>
 
-				<div className="mt-12 flex flex-col items-center justify-center rounded-2xl border border-neutral-200 bg-white p-12 dark:border-neutral-800 dark:bg-slate-900">
+				<div className="mt-12 flex flex-col items-center justify-center rounded-2xl border border-neutral-200 bg-white p-12 dark:border-neutral-800 dark:bg-surface">
 					<Shield className="h-16 w-16 text-neutral-300 dark:text-neutral-600" />
-					<p className="mt-4 text-sm text-neutral-500 dark:text-neutral-400">
+					<p className="mt-4 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
 						{t('privacy.device.comingSoon')}
 					</p>
 				</div>
