@@ -37,6 +37,12 @@ export default function TrustLayout() {
 
 	return (
 		<div className="flex min-h-screen flex-col">
+			<a
+				href="#main-content"
+				className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary-600 focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-white"
+			>
+				{t('a11y.skipToContent')}
+			</a>
 			{/* Header */}
 			<header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/80 backdrop-blur-md dark:border-neutral-800 dark:bg-surface/80">
 				<div className="mx-auto flex h-[var(--layout-header-height)] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -44,8 +50,8 @@ export default function TrustLayout() {
 						{/* 这里此前是 <Shield /> —— lucide 的**安全**图标被当成了品牌标。
 						    图标表达概念，品牌标表达身份；两者不能互换。 */}
 						<img src="/logo-mark.svg" alt="" className="h-8 w-8" />
-						<span className="text-lg font-bold text-neutral-900 dark:text-white">Autional</span>
-						<span className="hidden text-sm text-[var(--color-text-muted)] dark:text-neutral-500 sm:inline">
+						<span className="text-lg font-bold text-[var(--color-text-primary)]">Autional</span>
+						<span className="hidden text-sm text-[var(--color-text-muted)] sm:inline">
 							{t('layout.trustCenter')}
 						</span>
 					</Link>
@@ -60,8 +66,8 @@ export default function TrustLayout() {
 								className={({ isActive }) =>
 									`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
 										isActive
-											? 'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
-											: 'text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-elevated dark:hover:text-white'
+											? 'bg-primary-50 text-primary-700 dark:bg-white/10 dark:text-sky-300'
+											: 'text-[var(--color-text-muted)] hover:bg-neutral-50 hover:text-[var(--color-text-primary)] dark:hover:bg-elevated'
 									}`
 								}
 							>
@@ -73,23 +79,31 @@ export default function TrustLayout() {
 					{/* Desktop Controls */}
 					<div className="hidden items-center gap-2 md:flex">
 						<LanguageSwitcher
-							className="inline-flex h-9 items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-50 px-3 text-xs font-medium text-neutral-500 transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:bg-surface dark:text-[var(--color-text-muted)] dark:hover:bg-elevated"
+							className="inline-flex h-11 items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-50 px-3 text-xs font-medium text-[var(--color-text-muted)] transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:bg-surface dark:hover:bg-elevated"
 							showIcon
 						/>
-						<ThemeToggle className="inline-flex h-9 w-9 items-center justify-center rounded-md text-neutral-600 transition-colors hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800" />
+						<ThemeToggle
+							className="inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--color-text-muted)] transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+							labelLight={t('layout.themeToLight')}
+							labelDark={t('layout.themeToDark')}
+						/>
 					</div>
 
 					{/* Mobile menu button */}
 					<div className="flex items-center gap-2 md:hidden">
 						<LanguageSwitcher
-							className="inline-flex h-9 items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-50 px-3 text-xs font-medium text-neutral-500 transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:bg-surface dark:text-[var(--color-text-muted)] dark:hover:bg-elevated"
+							className="inline-flex h-11 items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-50 px-3 text-xs font-medium text-[var(--color-text-muted)] transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:bg-surface dark:hover:bg-elevated"
 							showIcon
 						/>
-						<ThemeToggle className="inline-flex h-9 w-9 items-center justify-center rounded-md text-neutral-600 transition-colors hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800" />
+						<ThemeToggle
+							className="inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--color-text-muted)] transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+							labelLight={t('layout.themeToLight')}
+							labelDark={t('layout.themeToDark')}
+						/>
 						<button
-							className="inline-flex h-9 w-9 items-center justify-center rounded-md text-neutral-600 dark:text-neutral-300"
+							className="inline-flex h-11 w-11 items-center justify-center rounded-md text-[var(--color-text-muted)]"
 							onClick={() => setMobileOpen(!mobileOpen)}
-							aria-label="切换菜单"
+							aria-label={t('layout.toggleMenu')}
 						>
 							{mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
 						</button>
@@ -101,18 +115,20 @@ export default function TrustLayout() {
 					<div className="border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-surface md:hidden">
 						<div className="space-y-1 px-4 py-3">
 							{navLinks.map((link) => (
-								<Link
+								<NavLink
 									key={link.to}
 									to={link.to}
-									className={`block rounded-md px-3 py-2 text-base font-medium ${
-										location.pathname === link.to ||
-										(link.to !== '/' && location.pathname.startsWith(link.to))
-											? 'bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300'
-											: 'text-neutral-700 hover:bg-neutral-50 dark:text-neutral-300 dark:hover:bg-elevated'
-									}`}
+									end={link.end}
+									className={({ isActive }) =>
+										`block rounded-md px-3 py-2 text-base font-medium ${
+											isActive
+												? 'bg-primary-50 text-primary-700 dark:bg-white/10 dark:text-sky-300'
+												: 'text-[var(--color-text-muted)] hover:bg-neutral-50 dark:hover:bg-elevated'
+										}`
+									}
 								>
 									{link.label}
-								</Link>
+								</NavLink>
 							))}
 						</div>
 					</div>
@@ -120,7 +136,7 @@ export default function TrustLayout() {
 			</header>
 
 			{/* Main Content */}
-			<main className="flex-1">
+			<main id="main-content" className="flex-1">
 				<Outlet />
 			</main>
 
@@ -130,24 +146,24 @@ export default function TrustLayout() {
 					<div className="grid grid-cols-2 gap-8 md:grid-cols-4">
 						<div className="col-span-2 md:col-span-1">
 							<Link to="/" className="flex items-center gap-2">
-								<Shield className="h-5 w-5 text-primary-600" />
-								<span className="text-base font-bold text-neutral-900 dark:text-white">
+								<Shield className="h-5 w-5 text-primary-600 dark:text-sky-300" />
+								<span className="text-base font-bold text-[var(--color-text-primary)]">
 									{t('layout.trustCenter')}
 								</span>
 							</Link>
-							<p className="mt-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
+							<p className="mt-2 text-sm text-[var(--color-text-muted)]">
 								{t('layout.description')}
 							</p>
 						</div>
 						<div>
-							<h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-200">
+							<h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
 								{t('layout.security')}
 							</h3>
 							<ul className="mt-3 space-y-2">
 								<li>
 									<Link
 										to="/security"
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('nav.security')}
 									</Link>
@@ -155,7 +171,7 @@ export default function TrustLayout() {
 								<li>
 									<Link
 										to="/compliance"
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('nav.compliance')}
 									</Link>
@@ -163,7 +179,7 @@ export default function TrustLayout() {
 								<li>
 									<Link
 										to="/incidents"
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('nav.incidents')}
 									</Link>
@@ -171,7 +187,7 @@ export default function TrustLayout() {
 								<li>
 									<Link
 										to="/vulnerability-disclosure"
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('nav.vulnerabilityDisclosure')}
 									</Link>
@@ -179,7 +195,7 @@ export default function TrustLayout() {
 								<li>
 									<Link
 										to="/storage-security"
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('nav.storageSecurity')}
 									</Link>
@@ -187,14 +203,14 @@ export default function TrustLayout() {
 							</ul>
 						</div>
 						<div>
-							<h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-200">
+							<h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
 								{t('layout.compliance')}
 							</h3>
 							<ul className="mt-3 space-y-2">
 								<li>
 									<Link
 										to="/audit-reports"
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('nav.auditReports')}
 									</Link>
@@ -202,7 +218,7 @@ export default function TrustLayout() {
 								<li>
 									<Link
 										to="/data-residency"
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('nav.dataResidency')}
 									</Link>
@@ -210,7 +226,7 @@ export default function TrustLayout() {
 								<li>
 									<Link
 										to="/privacy"
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('nav.privacy')}
 									</Link>
@@ -218,7 +234,7 @@ export default function TrustLayout() {
 								<li>
 									<Link
 										to="/subprocessors"
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('nav.subprocessors')}
 									</Link>
@@ -226,14 +242,14 @@ export default function TrustLayout() {
 							</ul>
 						</div>
 						<div>
-							<h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-200">
+							<h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
 								{t('layout.brand')}
 							</h3>
 							<ul className="mt-3 space-y-2">
 								<li>
 									<a
 										href={LANDING_SITE_URL()}
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('layout.officialSite')}
 									</a>
@@ -241,7 +257,7 @@ export default function TrustLayout() {
 								<li>
 									<a
 										href={STATUS_PAGE_URL()}
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('layout.systemStatus')}
 									</a>
@@ -249,7 +265,7 @@ export default function TrustLayout() {
 								<li>
 									<a
 										href={DEVELOPER_PORTAL_URL()}
-										className="text-sm text-neutral-500 hover:text-primary-600 dark:text-[var(--color-text-muted)] dark:hover:text-primary-400"
+										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
 									>
 										{t('layout.developerDocs')}
 									</a>
@@ -257,7 +273,7 @@ export default function TrustLayout() {
 							</ul>
 						</div>
 					</div>
-					<div className="mt-8 border-t border-neutral-200 pt-8 text-center text-sm text-[var(--color-text-muted)] dark:border-neutral-800 dark:text-neutral-500">
+					<div className="mt-8 border-t border-neutral-200 pt-8 text-center text-sm text-[var(--color-text-muted)] dark:border-neutral-800">
 						© {new Date().getFullYear()} Autional.
 					</div>
 				</div>
@@ -267,7 +283,7 @@ export default function TrustLayout() {
 			{showScrollTop && (
 				<button
 					onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-					className="fixed bottom-6 right-6 z-40 flex h-10 w-10 items-center justify-center rounded-full bg-primary-600 text-white shadow-lg transition-transform hover:scale-105 dark:bg-primary-700"
+					className="fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full bg-primary-600 text-white shadow-brand transition-transform hover:scale-105 dark:bg-primary-700"
 					aria-label={t('layout.backToTop')}
 				>
 					<ChevronUp className="h-5 w-5" />

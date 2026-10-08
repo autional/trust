@@ -49,8 +49,7 @@ vi.mock('react-i18next', () => {
 });
 
 vi.mock('@autional/shared', () => ({
-	usePageTitle: vi.fn(),
-	usePageMeta: vi.fn(),
+	useSEO: vi.fn(),
 }));
 
 vi.mock('@/hooks/use-trust-api', () => ({

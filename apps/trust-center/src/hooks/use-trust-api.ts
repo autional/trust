@@ -37,10 +37,10 @@ export function usePenTestReports(page = 1, pageSize = 20) {
 	});
 }
 
-export function useAuditFindings(severity?: string, status?: string, page = 1, pageSize = 20) {
+export function useAuditFindings(severity?: string, page = 1, pageSize = 20) {
 	return useQuery({
-		queryKey: ['compliance', 'audit-findings', severity, status, page, pageSize],
-		queryFn: () => getAuditFindings({ severity, page, pageSize } as any),
+		queryKey: ['compliance', 'audit-findings', severity, page, pageSize],
+		queryFn: () => getAuditFindings({ severity, page, page_size: pageSize }),
 	});
 }
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router';
-import { usePageTitle, usePageMeta } from '@autional/shared';
+import { useTrustSEO } from '@/lib/seo';
 import { notificationsPublicSecurityUnsubscribePost } from '@autional/shared/generated/api';
 import { CheckCircle2, XCircle, Loader2, Mail, ArrowLeft, Bell } from 'lucide-react';
 
@@ -16,8 +16,10 @@ type UnsubscribeState = 'idle' | 'submitting' | 'success' | 'fail' | 'noToken';
  */
 export default function SecurityAlertsUnsubscribePage() {
 	const { t } = useTranslation();
-	usePageTitle(t('securityAlerts.unsubscribe.title'));
-	usePageMeta(t('securityAlerts.unsubscribe.meta'));
+	useTrustSEO({
+		title: t('securityAlerts.unsubscribe.title'),
+		description: t('securityAlerts.unsubscribe.meta'),
+	});
 
 	const [searchParams] = useSearchParams();
 	const email = searchParams.get('email') ?? '';
@@ -45,22 +47,22 @@ export default function SecurityAlertsUnsubscribePage() {
 			<div className="mx-auto max-w-xl text-center">
 				{state === 'idle' && (
 					<>
-						<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-900/30">
+						<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-900">
 							<Mail className="h-8 w-8 text-amber-600 dark:text-amber-400" />
 						</div>
-						<h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
+						<h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
 							{t('securityAlerts.unsubscribe.title')}
 						</h1>
-						<p className="mt-3 text-neutral-600 dark:text-[var(--color-text-muted)]">
+						<p className="mt-3 text-[var(--color-text-muted)]">
 							{t('securityAlerts.unsubscribe.desc')}
 						</p>
-						<p className="mt-2 break-all text-sm font-medium text-neutral-900 dark:text-white">
+						<p className="mt-2 break-all text-sm font-medium text-[var(--color-text-primary)]">
 							{email}
 						</p>
 						<button
 							type="button"
 							onClick={handleUnsubscribe}
-							className="mt-8 inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-primary-700"
+							className="mt-8 inline-flex items-center justify-center gap-2 rounded-md bg-primary-600 px-5 py-2.5 text-sm font-medium text-white shadow-card transition-colors hover:bg-primary-700"
 						>
 							<XCircle className="h-4 w-4" />
 							{t('securityAlerts.unsubscribe.confirmButton')}
@@ -70,8 +72,8 @@ export default function SecurityAlertsUnsubscribePage() {
 
 				{state === 'submitting' && (
 					<>
-						<Loader2 className="mx-auto h-10 w-10 animate-spin text-primary-600" />
-						<h1 className="mt-6 text-2xl font-bold text-neutral-900 dark:text-white">
+						<Loader2 className="mx-auto h-10 w-10 animate-spin text-primary-600 dark:text-sky-300" />
+						<h1 className="mt-6 text-2xl font-bold text-[var(--color-text-primary)]">
 							{t('securityAlerts.unsubscribe.submitting')}
 						</h1>
 					</>
@@ -82,10 +84,10 @@ export default function SecurityAlertsUnsubscribePage() {
 						<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success-soft/30">
 							<CheckCircle2 className="h-8 w-8 text-success-text" />
 						</div>
-						<h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
+						<h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
 							{t('securityAlerts.unsubscribe.successTitle')}
 						</h1>
-						<p className="mt-3 text-neutral-600 dark:text-[var(--color-text-muted)]">
+						<p className="mt-3 text-[var(--color-text-muted)]">
 							{t('securityAlerts.unsubscribe.successDesc')}
 						</p>
 					</>
@@ -96,10 +98,10 @@ export default function SecurityAlertsUnsubscribePage() {
 						<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-danger-soft/30">
 							<XCircle className="h-8 w-8 text-danger-text" />
 						</div>
-						<h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
+						<h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
 							{t('securityAlerts.unsubscribe.failTitle')}
 						</h1>
-						<p className="mt-3 text-neutral-600 dark:text-[var(--color-text-muted)]">
+						<p className="mt-3 text-[var(--color-text-muted)]">
 							{state === 'noToken'
 								? t('securityAlerts.unsubscribe.noToken')
 								: t('securityAlerts.unsubscribe.failDesc')}
@@ -119,7 +121,7 @@ export default function SecurityAlertsUnsubscribePage() {
 					)}
 					<Link
 						to="/security-alerts"
-						className="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700"
+						className="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-sky-300 dark:hover:text-sky-200"
 					>
 						<ArrowLeft className="h-4 w-4" />
 						{t('securityAlerts.unsubscribe.back')}

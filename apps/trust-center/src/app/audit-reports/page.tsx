@@ -1,6 +1,4 @@
-'use client';
-
-import { usePageTitle, usePageMeta } from '@autional/shared';
+import { useTrustSEO } from '@/lib/seo';
 import {
 	usePenTestReports,
 	usePublicAuditStats,
@@ -35,12 +33,13 @@ const STATIC_FALLBACK_CERTS = [
 export default function AuditReportsPage() {
 	const { t, i18n } = useTranslation();
 
-	usePageTitle(t('auditReports.title'));
-	usePageMeta(
-		i18n.language === 'zh-CN'
-			? 'Autional 审计报告 — 审计日志摘要、哈希链完整性证明与合规建设进展。'
-			: 'Autional Audit Reports — Audit log summaries, hash chain integrity proofs and compliance progress.',
-	);
+	useTrustSEO({
+		title: t('auditReports.title'),
+		description:
+			i18n.language === 'zh-CN'
+				? 'Autional 审计报告 — 审计日志摘要、哈希链完整性证明与合规建设进展。'
+				: 'Autional Audit Reports — Audit log summaries, hash chain integrity proofs and compliance progress.',
+	});
 
 	const { data: penTestData, isLoading, isError } = usePenTestReports(1, 20);
 
@@ -77,7 +76,7 @@ export default function AuditReportsPage() {
 					) : statsData ? (
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 							<div className="text-center p-4 bg-neutral-50 dark:bg-surface rounded-lg">
-								<div className="text-3xl font-bold text-primary-600">
+								<div className="text-3xl font-bold text-primary-600 dark:text-sky-300">
 									{Number(statsData.totalLogs).toLocaleString()}
 								</div>
 								<div className="text-sm text-[var(--color-text-muted)] mt-1">{t('audit.totalEvents')}</div>
@@ -86,7 +85,7 @@ export default function AuditReportsPage() {
 								.slice(0, 3)
 								.map(([k, v]) => (
 									<div key={k} className="text-center p-4 bg-neutral-50 dark:bg-surface rounded-lg">
-										<div className="text-3xl font-bold text-primary-600">
+										<div className="text-3xl font-bold text-primary-600 dark:text-sky-300">
 											{Number(v).toLocaleString()}
 										</div>
 										<div className="text-sm text-[var(--color-text-muted)] mt-1">{k}</div>
@@ -106,27 +105,27 @@ export default function AuditReportsPage() {
 						<div className="space-y-4">
 							<div className="flex items-center justify-center gap-3 text-sm font-mono">
 								<span
-									className="rounded bg-neutral-100 dark:bg-surface px-3 py-1.5 text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]"
+									className="rounded-xs bg-neutral-100 dark:bg-surface px-3 py-1.5 text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]"
 									title={hashChainData.startHash}
 								>
 									{hashChainData.startHash}
 								</span>
 								<ArrowRight className="h-4 w-4 text-[var(--color-text-muted)]" />
-								<span className="rounded bg-neutral-100 dark:bg-surface px-3 py-1.5 text-[var(--color-text-secondary)]">
+								<span className="rounded-xs bg-neutral-100 dark:bg-surface px-3 py-1.5 text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]">
 									...
 								</span>
 								<ArrowRight className="h-4 w-4 text-[var(--color-text-muted)]" />
 								<span
-									className="rounded bg-neutral-100 dark:bg-surface px-3 py-1.5 text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]"
+									className="rounded-xs bg-neutral-100 dark:bg-surface px-3 py-1.5 text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]"
 									title={hashChainData.endHash}
 								>
 									{hashChainData.endHash}
 								</span>
-								<CheckCircle2 className="h-5 w-5 text-success" />
+								<CheckCircle2 className="h-5 w-5 text-[var(--color-success-text)]" />
 							</div>
 							<div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
 								<div className="text-center p-3 bg-neutral-50 dark:bg-surface rounded-lg">
-									<div className="text-lg font-semibold text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]">
+									<div className="text-lg font-semibold text-[var(--color-text-secondary)] dark:text-[var(--color-text-primary)]">
 										{Number(hashChainData.logCount).toLocaleString()}
 									</div>
 									<div className="text-xs text-[var(--color-text-muted)]">{t('audit.logCount')}</div>
@@ -162,15 +161,15 @@ export default function AuditReportsPage() {
 					) : logsSummaryData ? (
 						<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
 							<div className="text-center p-4 bg-neutral-50 dark:bg-surface rounded-lg">
-								<Activity className="h-5 w-5 text-primary-600 mx-auto mb-1" />
-								<div className="text-2xl font-bold text-primary-600">
+								<Activity className="h-5 w-5 text-primary-600 dark:text-sky-300 mx-auto mb-1" />
+								<div className="text-2xl font-bold text-primary-600 dark:text-sky-300">
 									{Number(logsSummaryData.totalLogs).toLocaleString()}
 								</div>
 								<div className="text-xs text-[var(--color-text-muted)] mt-1">{t('audit.totalLogs')}</div>
 							</div>
 							<div className="text-center p-4 bg-neutral-50 dark:bg-surface rounded-lg">
-								<Hash className="h-5 w-5 text-primary-600 mx-auto mb-1" />
-								<div className="text-2xl font-bold text-primary-600">
+								<Hash className="h-5 w-5 text-primary-600 dark:text-sky-300 mx-auto mb-1" />
+								<div className="text-2xl font-bold text-primary-600 dark:text-sky-300">
 									{Number(logsSummaryData.moduleCount).toLocaleString()}
 								</div>
 								<div className="text-xs text-[var(--color-text-muted)] mt-1">{t('audit.modules')}</div>
@@ -193,22 +192,22 @@ export default function AuditReportsPage() {
 
 				{/* Dynamic Penetration Test Reports */}
 				<div className="mt-12">
-					<h2 className="text-xl font-bold text-neutral-900 dark:text-white">
+					<h2 className="text-xl font-bold text-[var(--color-text-primary)]">
 						{t('auditReports.securityTestReports')}
 					</h2>
-					<p className="mt-1 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
+					<p className="mt-1 text-sm text-[var(--color-text-muted)]">
 						{t('auditReports.securityTestDesc')}
 					</p>
 
 					{isLoading && (
-						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
+						<div className="mt-4 flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
 							<Loader2 className="h-4 w-4 animate-spin" />
 							{t('auditReports.loadingSecurityTests')}
 						</div>
 					)}
 
 					{isError && (
-						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-surface/50">
+						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-[var(--color-text-muted)] dark:border-neutral-800 dark:bg-surface/50">
 							<AlertTriangle className="mb-1 inline h-4 w-4" />
 							{t('auditReports.securityTestLoadFailed')}
 						</div>
@@ -219,37 +218,37 @@ export default function AuditReportsPage() {
 							{penTestData.items.map((report) => (
 								<SectionCard key={report.id} padding="lg">
 									<div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-										<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-900/20">
-											<Shield className="h-7 w-7 text-primary-600" />
+										<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-white/10">
+											<Shield className="h-7 w-7 text-primary-600 dark:text-sky-300" />
 										</div>
 										<div className="flex-1">
 											<div className="flex flex-wrap items-center gap-3">
-												<h3 className="text-lg font-bold text-neutral-900 dark:text-white">
+												<h3 className="text-lg font-bold text-[var(--color-text-primary)]">
 													{report.title}
 												</h3>
-												<span className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success">
+												<span className="inline-flex items-center gap-1 rounded-full bg-[var(--color-success-soft)] px-2 py-0.5 text-xs font-medium text-[var(--color-success-text)]">
 													<CheckCircle2 className="h-3.5 w-3.5" />
 													{t('common.status.completed')}
 												</span>
 											</div>
-											<p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
+											<p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
 												{report.summary}
 											</p>
-											<div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
+											<div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-[var(--color-text-muted)]">
 												<div>
-													<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
+													<span className="text-[var(--color-text-muted)]">
 														{t('auditReports.labels.conductedAt')}
 													</span>
 													{report.conductedAt}
 												</div>
 												<div>
-													<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
+													<span className="text-[var(--color-text-muted)]">
 														{t('auditReports.labels.severity')}
 													</span>
 													{report.severity}
 												</div>
 												<div>
-													<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
+													<span className="text-[var(--color-text-muted)]">
 														{t('auditReports.labels.nextTest')}
 													</span>
 													{report.nextTestDate || '—'}
@@ -274,12 +273,12 @@ export default function AuditReportsPage() {
 
 				{/* Certifications / Standard Docs */}
 				<div className="mt-12">
-					<h2 className="text-xl font-bold text-neutral-900 dark:text-white">
+					<h2 className="text-xl font-bold text-[var(--color-text-primary)]">
 						{t('auditReports.standardDocs')}
 					</h2>
 
 					{certsLoading && (
-						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
+						<div className="mt-4 flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
 							<Loader2 className="h-4 w-4 animate-spin" />
 							{t('common.loading')}
 						</div>
@@ -288,27 +287,27 @@ export default function AuditReportsPage() {
 					{!certsLoading && (
 						<div className="mt-4 grid gap-6">
 							{certsData && certsData.items && certsData.items.length > 0
-								? certsData.items.map((cert: any) => (
+								? certsData.items.map((cert) => (
 										<SectionCard key={cert.framework} padding="lg">
 											<div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-												<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-900/20">
-													<Award className="h-7 w-7 text-primary-600" />
+												<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-white/10">
+													<Award className="h-7 w-7 text-primary-600 dark:text-sky-300" />
 												</div>
 												<div className="flex-1">
 													<div className="flex flex-wrap items-center gap-3">
-														<h3 className="text-lg font-bold text-neutral-900 dark:text-white">
+														<h3 className="text-lg font-bold text-[var(--color-text-primary)]">
 															{cert.framework}
 														</h3>
-														{cert.last_audited_date && (
-															<span className="text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
+														{cert.lastAuditedDate && (
+															<span className="text-xs text-[var(--color-text-muted)]">
 																{t('common.lastAudited')}
-																{cert.last_audited_date}
+																{cert.lastAuditedDate}
 															</span>
 														)}
 													</div>
-													{cert.criteria_scopes && (
-														<p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
-															{cert.criteria_scopes}
+													{cert.criteriaScopes && (
+														<p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
+															{cert.criteriaScopes}
 														</p>
 													)}
 												</div>
@@ -324,19 +323,19 @@ export default function AuditReportsPage() {
 										return (
 											<SectionCard key={key} padding="lg">
 												<div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-													<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-900/20">
-														<Icon className="h-7 w-7 text-primary-600" />
+													<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-white/10">
+														<Icon className="h-7 w-7 text-primary-600 dark:text-sky-300" />
 													</div>
 													<div className="flex-1">
 														<div className="flex flex-wrap items-center gap-3">
-															<h3 className="text-lg font-bold text-neutral-900 dark:text-white">
+															<h3 className="text-lg font-bold text-[var(--color-text-primary)]">
 																{report.title}
 															</h3>
-															<span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-neutral-500 dark:bg-surface dark:text-[var(--color-text-muted)]">
+															<span className="inline-flex items-center gap-1 rounded-full bg-neutral-100 px-2 py-0.5 text-xs font-medium text-[var(--color-text-muted)] dark:bg-surface">
 																{report.status}
 															</span>
 														</div>
-														<p className="mt-2 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
+														<p className="mt-2 text-sm leading-relaxed text-[var(--color-text-muted)]">
 															{report.desc}
 														</p>
 													</div>
@@ -348,7 +347,7 @@ export default function AuditReportsPage() {
 					)}
 				</div>
 
-				<div className="mt-12 rounded-xl border border-primary-200 bg-primary-50 p-6 dark:border-primary-800 dark:bg-primary-900/20">
+				<div className="mt-12 rounded-xl border border-primary-200 bg-primary-50 p-6 dark:border-primary-800 dark:bg-white/5">
 					<div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div>
 							<h3 className="text-base font-semibold text-primary-900 dark:text-primary-200">

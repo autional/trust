@@ -1,4 +1,4 @@
-import { usePageTitle, usePageMeta } from '@autional/shared';
+import { useTrustSEO } from '@/lib/seo';
 import {
 	useAuditFindings,
 	useComplianceStatus,
@@ -30,19 +30,20 @@ const certKeys = ['iso27001', 'soc2', 'gdpr', 'djbh'] as const;
 
 export default function CompliancePage() {
 	const { t, i18n } = useTranslation();
-	usePageTitle(t('compliance.title'));
-	usePageMeta(
-		i18n.language === 'zh-CN'
-			? 'Autional 合规建设进展 — 我们对照的合规框架、当前状态与建设情况说明。'
-			: 'Autional Compliance Progress — The compliance frameworks we track, their current status, and our build-out progress.',
-	);
+	useTrustSEO({
+		title: t('compliance.title'),
+		description:
+			i18n.language === 'zh-CN'
+				? 'Autional 合规建设进展 — 我们对照的合规框架、当前状态与建设情况说明。'
+				: 'Autional Compliance Progress — The compliance frameworks we track, their current status, and our build-out progress.',
+	});
 
-	const { data: findingsData, isLoading, isError } = useAuditFindings(undefined, undefined, 1, 5);
+	const { data: findingsData, isLoading, isError } = useAuditFindings(undefined, 1, 5);
 	const { data: statusData } = useComplianceStatus();
 	const { data: scoreData } = useSecurityScore();
-	const { data: certsData, isLoading: certsLoading } = usePublicCertifications();
+	const { data: certsData } = usePublicCertifications();
 	const publicScore = scoreData?.overallScore ?? null;
-	const publicStandards = (statusData as any)?.frameworks_enabled ?? [];
+	const publicStandards = statusData?.frameworksEnabled ?? [];
 	const apiCerts = certsData?.items?.length ? certsData.items : null;
 
 	return (
@@ -52,23 +53,23 @@ export default function CompliancePage() {
 
 				{/* Dynamic Compliance Score */}
 				{publicScore != null && (
-					<div className="mt-8 rounded-xl border border-primary-200 bg-gradient-to-br from-primary-50 to-white p-6 dark:border-primary-800 dark:from-primary-900/20 dark:to-surface">
+					<div className="mt-8 rounded-xl border border-primary-200 bg-gradient-to-br from-primary-50 to-white p-6 dark:border-primary-800 dark:from-primary-800 dark:to-surface">
 						<div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
 							<div className="flex items-center gap-4">
-								<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-100 dark:bg-primary-800">
-									<Award className="h-7 w-7 text-primary-600" />
+								<div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary-100 dark:bg-white/10">
+									<Award className="h-7 w-7 text-primary-600 dark:text-sky-300" />
 								</div>
 								<div>
-									<h2 className="text-lg font-bold text-neutral-900 dark:text-white">
+									<h2 className="text-lg font-bold text-[var(--color-text-primary)]">
 										{t('compliance.liveScore', '实时合规评分')}
 									</h2>
-									<p className="text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
+									<p className="text-sm text-[var(--color-text-muted)]">
 										{t('compliance.liveScoreDesc', '当前系统的安全合规指标综合评分')}
 									</p>
 								</div>
 							</div>
 							<div className="flex items-baseline gap-2">
-								<span className="text-4xl font-bold text-primary-600">{publicScore}</span>
+								<span className="text-4xl font-bold text-primary-600 dark:text-sky-300">{publicScore}</span>
 								<span className="text-lg text-[var(--color-text-muted)]">/ 100</span>
 							</div>
 						</div>
@@ -90,7 +91,7 @@ export default function CompliancePage() {
 				{/* Certifications */}
 				<div className="mt-12 space-y-8">
 					{apiCerts && apiCerts.length > 0 && (
-						<div className="mb-4 rounded-lg border border-primary-200 bg-primary-50 px-4 py-2 text-xs text-primary-700 dark:border-primary-800 dark:bg-primary-900/20">
+						<div className="mb-4 rounded-lg border border-primary-200 bg-primary-50 px-4 py-2 text-xs text-primary-700 dark:border-primary-800 dark:bg-white/5 dark:text-primary-300">
 							{t('compliance.liveCertData', '以下数据来自认证管理 API，实时同步')}
 						</div>
 					)}
@@ -98,23 +99,23 @@ export default function CompliancePage() {
 						? apiCerts.map((cert) => (
 								<SectionCard key={cert.framework || cert.auditor} padding="lg">
 									<div className="flex flex-col gap-6 md:flex-row md:items-start">
-										<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-900/20">
-											<FileText className="h-7 w-7 text-primary-600" />
+										<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-white/10">
+											<FileText className="h-7 w-7 text-primary-600 dark:text-sky-300" />
 										</div>
 										<div className="flex-1">
 											<div className="flex flex-wrap items-center gap-3">
-												<h2 className="text-xl font-bold text-neutral-900 dark:text-white">
+												<h2 className="text-xl font-bold text-[var(--color-text-primary)]">
 												{cert.framework || cert.auditor}
 											</h2>
 											{cert.lastAuditedDate && (
-												<span className="text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
+												<span className="text-xs text-[var(--color-text-muted)]">
 													{t('common.lastAudited')}
 													{cert.lastAuditedDate}
 												</span>
 											)}
 										</div>
 										{cert.criteriaScopes && (
-											<p className="mt-4 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
+											<p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)]">
 												{cert.criteriaScopes}
 											</p>
 										)}
@@ -132,17 +133,17 @@ export default function CompliancePage() {
 							return (
 								<SectionCard key={key} padding="lg">
 									<div className="flex flex-col gap-6 md:flex-row md:items-start">
-										<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-primary-900/20">
-											<Icon className="h-7 w-7 text-primary-600" />
+										<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-primary-50 dark:bg-white/10">
+											<Icon className="h-7 w-7 text-primary-600 dark:text-sky-300" />
 										</div>
 										<div className="flex-1">
 											<div className="flex flex-wrap items-center gap-3">
-												<h2 className="text-xl font-bold text-neutral-900 dark:text-white">
+												<h2 className="text-xl font-bold text-[var(--color-text-primary)]">
 													{cert.name}
 												</h2>
 												<StatusBadge variant="neutral">{cert.status}</StatusBadge>
 											</div>
-											<p className="mt-4 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
+											<p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)]">
 												{cert.scope}
 											</p>
 										</div>
@@ -154,22 +155,22 @@ export default function CompliancePage() {
 
 				{/* Dynamic Audit Findings */}
 				<div className="mt-12">
-					<h2 className="text-xl font-bold text-neutral-900 dark:text-white">
+					<h2 className="text-xl font-bold text-[var(--color-text-primary)]">
 						{t('compliance.latestFindings')}
 					</h2>
-					<p className="mt-1 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
+					<p className="mt-1 text-sm text-[var(--color-text-muted)]">
 						{t('compliance.findingsDesc')}
 					</p>
 
 					{isLoading && (
-						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
+						<div className="mt-4 flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
 							<Loader2 className="h-4 w-4 animate-spin" />
 							{t('compliance.loadingFindings')}
 						</div>
 					)}
 
 					{isError && (
-						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-surface/50">
+						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-[var(--color-text-muted)] dark:border-neutral-800 dark:bg-surface/50">
 							<AlertTriangle className="mb-1 inline h-4 w-4" />
 							{t('compliance.findingsLoadFailed')}
 						</div>
@@ -194,19 +195,19 @@ export default function CompliancePage() {
 									>
 										<div className="flex-1">
 											<div className="flex flex-wrap items-center gap-2">
-												<span className="text-sm font-semibold text-neutral-900 dark:text-white">
+												<span className="text-sm font-semibold text-[var(--color-text-primary)]">
 													{finding.title}
 												</span>
 												<StatusBadge variant={variant}>{finding.severity}</StatusBadge>
 												<StatusBadge variant="neutral">{finding.status}</StatusBadge>
 											</div>
-											<p className="mt-1 text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
+											<p className="mt-1 text-xs text-[var(--color-text-muted)]">
 												{t('common.controlType')}
 												{finding.controlType} · {t('common.controlId')}
 												{finding.controlId}
 											</p>
 										</div>
-										<div className="text-xs text-[var(--color-text-muted)] dark:text-neutral-500">
+										<div className="text-xs text-[var(--color-text-muted)]">
 											{t('common.dueDate')}
 											{finding.dueDate || '—'}
 										</div>
@@ -221,13 +222,13 @@ export default function CompliancePage() {
 							<EmptyState
 								title={t('compliance.noFindings')}
 								description={t('compliance.noFindingsDesc')}
-								icon={<CheckCircle2 className="h-6 w-6 text-success" />}
+								icon={<CheckCircle2 className="h-6 w-6 text-[var(--color-success-text)]" />}
 							/>
 						</div>
 					)}
 				</div>
 
-				<div className="mt-12 rounded-xl border border-primary-200 bg-primary-50 p-6 dark:border-primary-800 dark:bg-primary-900/20">
+				<div className="mt-12 rounded-xl border border-primary-200 bg-primary-50 p-6 dark:border-primary-800 dark:bg-white/5">
 					<div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div>
 							<h3 className="text-base font-semibold text-primary-900 dark:text-primary-200">

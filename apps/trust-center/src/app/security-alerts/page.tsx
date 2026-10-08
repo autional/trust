@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useSEO } from '@autional/shared';
+import { useTrustSEO } from '@/lib/seo';
 import { notificationsPublicSecuritySubscribePost } from '@autional/shared/generated/api';
+import type { SecuritySubscribeDetailResponse } from '@autional/shared/generated/types';
 import { useTranslation } from 'react-i18next';
 import { Bell, Mail, CheckCircle2, AlertTriangle, ArrowRight, Shield, Loader2 } from 'lucide-react';
 
@@ -29,15 +30,13 @@ const TOPIC_KEYS = [
 export default function SecurityAlertsPage() {
 	const { t, i18n } = useTranslation();
 
-	useSEO(
-		{
-			title: t('securityAlerts.title'),
-			description: i18n.language?.startsWith('zh')
+	useTrustSEO({
+		title: t('securityAlerts.title'),
+		description:
+			i18n.language?.startsWith('zh')
 				? '订阅 Autional 安全告警，获取数据泄露通知、漏洞预警和安全更新。'
 				: 'Subscribe to Autional security alerts for data breach notifications, vulnerability warnings, and security updates.',
-		},
-		{ siteName: 'Autional Trust Center' },
-	);
+	});
 
 	const {
 		register,
@@ -57,15 +56,13 @@ export default function SecurityAlertsPage() {
 		setSubmitState('idle');
 		setMessage('');
 		try {
-			const res = await notificationsPublicSecuritySubscribePost({
+			const res = (await notificationsPublicSecuritySubscribePost({
 				email: data.email.trim(),
 				company: data.company?.trim() || undefined,
 				topics: data.topics,
-			} as any);
+			})) as SecuritySubscribeDetailResponse | undefined;
 			setSubmitState('success');
-			setMessage(
-				(res as any)?.data?.message || (res as any)?.message || t('securityAlerts.successMessage'),
-			);
+			setMessage(res?.data?.message || res?.message || t('securityAlerts.successMessage'));
 		} catch (err) {
 			if (import.meta.env.DEV) {
 				console.error('[SecurityAlerts] Subscribe failed:', err);
@@ -85,30 +82,30 @@ export default function SecurityAlertsPage() {
 		<div className="px-4 py-12 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-3xl">
 				<div className="text-center">
-					<div className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">
+					<div className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-3 py-1 text-sm font-medium text-primary-700 dark:bg-white/10 dark:text-sky-300">
 						<Bell className="h-4 w-4" />
 						{t('securityAlerts.badge')}
 					</div>
-					<h1 className="mt-4 text-3xl font-bold tracking-tight text-neutral-900 dark:text-white sm:text-4xl">
+					<h1 className="mt-4 text-3xl font-bold tracking-tight text-[var(--color-text-primary)] sm:text-4xl">
 						{t('securityAlerts.title')}
 					</h1>
-					<p className="mx-auto mt-4 max-w-lg text-neutral-600 dark:text-neutral-300">
+					<p className="mx-auto mt-4 max-w-lg text-[var(--color-text-muted)]">
 						{t('securityAlerts.subtitle')}
 					</p>
 				</div>
 
 				{submitState === 'success' ? (
-					<div className="mt-10 rounded-2xl border border-success-soft bg-success-soft p-8 text-center dark:border-success-soft dark:bg-success-soft/20">
+					<div className="mt-10 rounded-md border border-success-soft bg-success-soft p-8 text-center dark:border-success-soft dark:bg-success-soft/20">
 						<div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-success-soft/30">
 							<CheckCircle2 className="h-7 w-7 text-success-text" />
 						</div>
-						<h2 className="mt-4 text-xl font-semibold text-neutral-900 dark:text-white">
+						<h2 className="mt-4 text-xl font-semibold text-[var(--color-text-primary)]">
 							{t('securityAlerts.success')}
 						</h2>
-						<p className="mt-2 text-neutral-600 dark:text-[var(--color-text-muted)]">{message}</p>
+						<p className="mt-2 text-[var(--color-text-muted)]">{message}</p>
 						<button
 							onClick={resetForm}
-							className="mt-6 inline-flex items-center gap-2 rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-surface dark:text-neutral-300 dark:hover:bg-elevated"
+							className="mt-6 inline-flex items-center gap-2 rounded-md border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-[var(--color-text-muted)] hover:bg-neutral-50 dark:border-neutral-700 dark:bg-surface dark:hover:bg-elevated"
 						>
 							{t('securityAlerts.subscribeMore')}
 							<ArrowRight className="h-4 w-4" />
@@ -117,15 +114,15 @@ export default function SecurityAlertsPage() {
 				) : (
 					<form
 						onSubmit={handleSubmit(onSubmit)}
-						className="mt-10 rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-surface sm:p-8"
+						className="mt-10 rounded-md border border-neutral-200 bg-white p-6 shadow-card dark:border-neutral-800 dark:bg-surface sm:p-8"
 					>
 						<div className="space-y-5">
 							<div>
 								<label
 									htmlFor="email"
-									className="block text-sm font-medium text-neutral-900 dark:text-white"
+									className="block text-sm font-medium text-[var(--color-text-primary)]"
 								>
-									{t('securityAlerts.emailLabel')} <span className="text-danger">*</span>
+									{t('securityAlerts.emailLabel')} <span className="text-[var(--color-danger-text)]">*</span>
 								</label>
 								<div className="relative mt-1.5">
 									<Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--color-text-muted)]" />
@@ -134,7 +131,7 @@ export default function SecurityAlertsPage() {
 										type="email"
 										{...register('email')}
 										placeholder="your@email.com"
-										className={`w-full rounded-md border py-2.5 pl-10 pr-3 text-sm bg-white dark:bg-surface dark:text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-primary-500 ${errors.email ? 'border-danger-soft focus:ring-red-500' : 'border-neutral-300 dark:border-neutral-700'}`}
+										className={`w-full rounded-md border py-2.5 pl-10 pr-3 text-sm bg-white dark:bg-surface dark:text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-primary-500 ${errors.email ? 'border-danger-soft focus:ring-danger' : 'border-neutral-300 dark:border-neutral-700'}`}
 									/>
 								</div>
 								{errors.email && (
@@ -147,7 +144,7 @@ export default function SecurityAlertsPage() {
 							<div>
 								<label
 									htmlFor="company"
-									className="block text-sm font-medium text-neutral-900 dark:text-white"
+									className="block text-sm font-medium text-[var(--color-text-primary)]"
 								>
 									{t('securityAlerts.companyLabel')}{' '}
 									<span className="text-[var(--color-text-muted)] text-xs font-normal">
@@ -158,14 +155,14 @@ export default function SecurityAlertsPage() {
 									id="company"
 									type="text"
 									{...register('company')}
-									placeholder="示例公司"
+									placeholder={t('securityAlerts.companyPlaceholder')}
 									className="mt-1.5 w-full rounded-md border border-neutral-300 py-2.5 px-3 text-sm bg-white dark:bg-surface dark:text-white dark:border-neutral-700 placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-primary-500"
 								/>
 							</div>
 
 							<div>
-								<label className="block text-sm font-medium text-neutral-900 dark:text-white mb-3">
-									{t('securityAlerts.topicLabel')} <span className="text-danger">*</span>
+								<label className="block text-sm font-medium text-[var(--color-text-primary)] mb-3">
+									{t('securityAlerts.topicLabel')} <span className="text-[var(--color-danger-text)]">*</span>
 								</label>
 								<Controller
 									name="topics"
@@ -183,7 +180,7 @@ export default function SecurityAlertsPage() {
 														key={key}
 														className={`flex cursor-pointer items-start gap-3 rounded-lg border p-4 transition-all ${
 															checked
-																? 'border-primary-400 bg-primary-50 dark:border-primary-600 dark:bg-primary-900/20'
+																? 'border-primary-400 bg-primary-50 dark:border-primary-600 dark:bg-white/10'
 																: 'border-neutral-200 bg-white hover:border-neutral-300 dark:border-neutral-800 dark:bg-surface dark:hover:border-neutral-700'
 														}`}
 													>
@@ -196,13 +193,13 @@ export default function SecurityAlertsPage() {
 																	: [...field.value, key];
 																field.onChange(next);
 															}}
-															className="mt-0.5 h-4 w-4 rounded border-neutral-300 text-primary-600 focus:ring-primary-500"
+															className="mt-0.5 h-4 w-4 rounded-xs border-neutral-300 text-primary-600 focus:ring-primary-500"
 														/>
 														<div>
-															<span className="text-sm font-medium text-neutral-900 dark:text-white">
+															<span className="text-sm font-medium text-[var(--color-text-primary)]">
 																{topic.label}
 															</span>
-															<p className="mt-0.5 text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
+															<p className="mt-0.5 text-xs text-[var(--color-text-muted)]">
 																{topic.desc}
 															</p>
 														</div>
@@ -229,7 +226,7 @@ export default function SecurityAlertsPage() {
 							<button
 								type="submit"
 								disabled={isSubmitting}
-								className="flex w-full items-center justify-center gap-2 rounded-md bg-primary-600 px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
+								className="flex w-full items-center justify-center gap-2 rounded-md bg-primary-600 px-4 py-3 text-sm font-semibold text-white shadow-card transition-colors hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed"
 							>
 								{isSubmitting ? (
 									<>
@@ -244,25 +241,25 @@ export default function SecurityAlertsPage() {
 								)}
 							</button>
 
-							<p className="text-center text-xs text-[var(--color-text-muted)] dark:text-neutral-500">
+							<p className="text-center text-xs text-[var(--color-text-muted)]">
 								{t('securityAlerts.privacyFooter')}
 							</p>
 						</div>
 					</form>
 				)}
 
-				<div className="mt-16 rounded-2xl border border-neutral-200 bg-neutral-50 p-8 dark:border-neutral-800 dark:bg-surface/50">
+				<div className="mt-16 rounded-md border border-neutral-200 bg-neutral-50 p-8 dark:border-neutral-800 dark:bg-surface/50">
 					<div className="flex items-center gap-3">
-						<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-primary-900/20">
+						<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-50 text-primary-600 dark:bg-white/10 dark:text-sky-300">
 							<Shield className="h-5 w-5" />
 						</div>
 						<div>
-							<h3 className="text-lg font-semibold text-neutral-900 dark:text-white">
+							<h3 className="text-lg font-semibold text-[var(--color-text-primary)]">
 								{t('securityAlerts.privacyTitle')}
 							</h3>
-							<p className="mt-1 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]">
+							<p className="mt-1 text-sm text-[var(--color-text-muted)]">
 								{t('securityAlerts.privacyText')}{' '}
-								<a href="/privacy" className="text-primary-600 underline hover:text-primary-700">
+								<a href="/privacy" className="text-primary-600 underline hover:text-primary-700 dark:text-sky-300 dark:hover:text-sky-200">
 									{t('securityAlerts.privacyLink')}
 								</a>
 								{t('securityAlerts.privacyText2')}

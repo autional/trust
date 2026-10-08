@@ -1,4 +1,4 @@
-import { usePageTitle, usePageMeta } from '@autional/shared';
+import { useTrustSEO } from '@/lib/seo';
 import { STATUS_PAGE_URL } from '@autional/shared';
 import { useTranslation } from 'react-i18next';
 import { useBreachNotifications } from '@/hooks/use-trust-api';
@@ -7,12 +7,13 @@ import { Clock, CheckCircle2, AlertTriangle, ExternalLink, Loader2 } from 'lucid
 
 export default function IncidentsPage() {
 	const { t, i18n } = useTranslation();
-	usePageTitle(t('incidents.title'));
-	usePageMeta(
-		i18n.language === 'zh-CN'
-			? 'Autional 安全事件响应 — 数据泄露通知、事件响应流程与透明度承诺。'
-			: 'Autional Security Incident Response — Breach notifications, incident response process and our transparency commitment.',
-	);
+	useTrustSEO({
+		title: t('incidents.title'),
+		description:
+			i18n.language === 'zh-CN'
+				? 'Autional 安全事件响应 — 数据泄露通知、事件响应流程与透明度承诺。'
+				: 'Autional Security Incident Response — Breach notifications, incident response process and our transparency commitment.',
+	});
 
 	const {
 		data: breachData,
@@ -36,8 +37,8 @@ export default function IncidentsPage() {
 				{/* Stats */}
 				<div className="mt-10">
 					<SectionCard className="text-center" padding="md">
-						<div className="text-3xl font-bold text-success">{dataBreachCount}</div>
-						<div className="mt-1 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]">
+						<div className="text-3xl font-bold text-[var(--color-success-text)]">{dataBreachCount}</div>
+						<div className="mt-1 text-sm text-[var(--color-text-muted)]">
 							{t('incidents.stats.breaches')}
 						</div>
 						{breachLoading && (
@@ -48,22 +49,22 @@ export default function IncidentsPage() {
 
 				{/* Dynamic Breach Notifications */}
 				<div className="mt-12">
-					<h2 className="text-xl font-bold text-neutral-900 dark:text-white">
+					<h2 className="text-xl font-bold text-[var(--color-text-primary)]">
 						{t('incidents.breachNotifications')}
 					</h2>
-					<p className="mt-1 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
+					<p className="mt-1 text-sm text-[var(--color-text-muted)]">
 						{t('incidents.breachDesc')}
 					</p>
 
 					{breachLoading && (
-						<div className="mt-4 flex items-center gap-2 text-sm text-neutral-500 dark:text-[var(--color-text-muted)]">
+						<div className="mt-4 flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
 							<Loader2 className="h-4 w-4 animate-spin" />
 							{t('incidents.loadingBreaches')}
 						</div>
 					)}
 
 					{breachError && (
-						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-neutral-500 dark:border-neutral-800 dark:bg-surface/50">
+						<div className="mt-4 rounded-lg border border-neutral-200 bg-neutral-50 p-4 text-sm text-[var(--color-text-muted)] dark:border-neutral-800 dark:bg-surface/50">
 							<AlertTriangle className="mb-1 inline h-4 w-4" />
 							{t('incidents.breachesLoadFailed')}
 						</div>
@@ -84,7 +85,7 @@ export default function IncidentsPage() {
 								return (
 									<SectionCard key={breach.id} padding="lg">
 										<div className="flex flex-wrap items-center gap-3">
-											<span className="font-mono text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
+											<span className="font-mono text-xs text-[var(--color-text-muted)]">
 												BREACH-{breach.id.slice(0, 8).toUpperCase()}
 											</span>
 											<StatusBadge variant={variant}>
@@ -96,18 +97,18 @@ export default function IncidentsPage() {
 												{breach.status}
 											</StatusBadge>
 										</div>
-										<h3 className="mt-2 text-lg font-bold text-neutral-900 dark:text-white">
+										<h3 className="mt-2 text-lg font-bold text-[var(--color-text-primary)]">
 											{breach.title}
 										</h3>
-										<div className="mt-1 flex items-center gap-1 text-xs text-neutral-500 dark:text-[var(--color-text-muted)]">
+										<div className="mt-1 flex items-center gap-1 text-xs text-[var(--color-text-muted)]">
 											<Clock className="h-3.5 w-3.5" />
 											{breach.createdAt}
 										</div>
-										<p className="mt-4 text-sm leading-relaxed text-neutral-600 dark:text-neutral-300">
+										<p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)]">
 											{breach.description}
 										</p>
-										<div className="mt-3 text-sm text-neutral-600 dark:text-neutral-300">
-											<span className="text-[var(--color-text-muted)] dark:text-neutral-500">
+										<div className="mt-3 text-sm text-[var(--color-text-muted)]">
+											<span className="text-[var(--color-text-muted)]">
 												{t('common.affectedUsers')}
 											</span>
 											{breach.affectedUsers ?? '—'}
@@ -123,7 +124,7 @@ export default function IncidentsPage() {
 							<EmptyState
 								title={t('incidents.noBreaches')}
 								description={t('incidents.noBreachesDesc')}
-								icon={<CheckCircle2 className="h-6 w-6 text-success" />}
+								icon={<CheckCircle2 className="h-6 w-6 text-[var(--color-success-text)]" />}
 							/>
 						</div>
 					)}
@@ -131,19 +132,19 @@ export default function IncidentsPage() {
 
 				{/* Response Process */}
 				<div className="mt-16">
-					<h2 className="text-center text-2xl font-bold text-neutral-900 dark:text-white">
+					<h2 className="text-center text-2xl font-bold text-[var(--color-text-primary)]">
 						{t('incidents.responseProcess')}
 					</h2>
 					<div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 						{processSteps.map((s) => (
 							<SectionCard key={s.step} padding="md">
-								<div className="text-2xl font-bold text-primary-200 dark:text-primary-800">
+								<div className="text-2xl font-bold text-primary-500 dark:text-primary-300">
 									{s.step}
 								</div>
-								<h3 className="mt-2 text-base font-semibold text-neutral-900 dark:text-white">
+								<h3 className="mt-2 text-base font-semibold text-[var(--color-text-primary)]">
 									{s.title}
 								</h3>
-								<p className="mt-2 text-sm text-neutral-600 dark:text-[var(--color-text-muted)]">{s.desc}</p>
+								<p className="mt-2 text-sm text-[var(--color-text-muted)]">{s.desc}</p>
 							</SectionCard>
 						))}
 					</div>
@@ -152,10 +153,10 @@ export default function IncidentsPage() {
 				<div className="mt-12 rounded-xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-surface/50">
 					<div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
 						<div>
-							<h3 className="text-base font-semibold text-neutral-900 dark:text-white">
+							<h3 className="text-base font-semibold text-[var(--color-text-primary)]">
 								{t('incidents.subscribe')}
 							</h3>
-							<p className="mt-1 text-sm text-neutral-600 dark:text-neutral-300">
+							<p className="mt-1 text-sm text-[var(--color-text-muted)]">
 								{t('incidents.subscribeDesc')}
 							</p>
 						</div>

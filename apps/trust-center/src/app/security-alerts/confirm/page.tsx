@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router';
-import { usePageTitle, usePageMeta } from '@autional/shared';
+import { useTrustSEO } from '@/lib/seo';
 import { notificationsPublicSecurityConfirm } from '@autional/shared/generated/api';
 import { CheckCircle2, XCircle, Loader2, ArrowLeft, Bell } from 'lucide-react';
 
@@ -16,8 +16,10 @@ type ConfirmState = 'loading' | 'success' | 'fail' | 'noToken';
  */
 export default function SecurityAlertsConfirmPage() {
 	const { t } = useTranslation();
-	usePageTitle(t('securityAlerts.confirm.title'));
-	usePageMeta(t('securityAlerts.confirm.meta'));
+	useTrustSEO({
+		title: t('securityAlerts.confirm.title'),
+		description: t('securityAlerts.confirm.meta'),
+	});
 
 	const [searchParams] = useSearchParams();
 	const email = searchParams.get('email') ?? '';
@@ -47,11 +49,11 @@ export default function SecurityAlertsConfirmPage() {
 			<div className="mx-auto max-w-xl text-center">
 				{state === 'loading' && (
 					<>
-						<Loader2 className="mx-auto h-10 w-10 animate-spin text-primary-600" />
-						<h1 className="mt-6 text-2xl font-bold text-neutral-900 dark:text-white">
+						<Loader2 className="mx-auto h-10 w-10 animate-spin text-primary-600 dark:text-sky-300" />
+						<h1 className="mt-6 text-2xl font-bold text-[var(--color-text-primary)]">
 							{t('securityAlerts.confirm.loading')}
 						</h1>
-						<p className="mt-2 text-neutral-600 dark:text-[var(--color-text-muted)]">
+						<p className="mt-2 text-[var(--color-text-muted)]">
 							{t('securityAlerts.confirm.loadingDesc')}
 						</p>
 					</>
@@ -62,10 +64,10 @@ export default function SecurityAlertsConfirmPage() {
 						<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success-soft/30">
 							<CheckCircle2 className="h-8 w-8 text-success-text" />
 						</div>
-						<h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
+						<h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
 							{t('securityAlerts.confirm.successTitle')}
 						</h1>
-						<p className="mt-3 text-neutral-600 dark:text-[var(--color-text-muted)]">
+						<p className="mt-3 text-[var(--color-text-muted)]">
 							{t('securityAlerts.confirm.successDesc')}
 						</p>
 					</>
@@ -76,10 +78,10 @@ export default function SecurityAlertsConfirmPage() {
 						<div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-danger-soft/30">
 							<XCircle className="h-8 w-8 text-danger-text" />
 						</div>
-						<h1 className="text-2xl font-bold text-neutral-900 dark:text-white">
+						<h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
 							{t('securityAlerts.confirm.failTitle')}
 						</h1>
-						<p className="mt-3 text-neutral-600 dark:text-[var(--color-text-muted)]">
+						<p className="mt-3 text-[var(--color-text-muted)]">
 							{state === 'noToken'
 								? t('securityAlerts.confirm.noToken')
 								: t('securityAlerts.confirm.failDesc')}
@@ -99,7 +101,7 @@ export default function SecurityAlertsConfirmPage() {
 					)}
 					<Link
 						to="/security-alerts"
-						className="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700"
+						className="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-sky-300 dark:hover:text-sky-200"
 					>
 						<ArrowLeft className="h-4 w-4" />
 						{t('securityAlerts.confirm.back')}

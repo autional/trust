@@ -26,4 +26,17 @@ i18n
 		},
 	});
 
+// 同步 <html lang> —— 语言切换后更新（a11y / 浏览器翻译）；不碰 document.title（各路由由 useTrustSEO 管理）
+const syncDocumentLang = () => {
+	if (typeof document !== 'undefined') {
+		document.documentElement.lang = i18n.language || 'zh-CN';
+	}
+};
+i18n.on('languageChanged', syncDocumentLang);
+if (i18n.isInitialized) {
+	syncDocumentLang();
+} else {
+	i18n.on('initialized', syncDocumentLang);
+}
+
 export default i18n;
