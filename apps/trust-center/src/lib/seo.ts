@@ -1,11 +1,9 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
 import { useSEO } from '@autional/shared';
+import { OG_IMAGE, SITE_URL } from '@/lib/site-env';
 
-const TRUST_SITE_URL = 'https://trust.autional.cn';
 const TRUST_SITE_NAME = 'Autional Trust Center';
-// shared 的默认 og:image 指向 iam.tianv.com 构建哨兵（线上 404）；全站统一改用 web 站托管的分享图
-const TRUST_OG_IMAGE = 'https://www.autional.cn/og-default.png';
 
 interface TrustSEOOptions {
 	title: string;
@@ -20,13 +18,13 @@ export function useTrustSEO({ title, description, noindex }: TrustSEOOptions) {
 		{
 			title,
 			description,
-			canonical: `${TRUST_SITE_URL}${pathname}`,
-			ogImage: TRUST_OG_IMAGE,
+			canonical: `${SITE_URL}${pathname}`,
+			ogImage: OG_IMAGE,
 		},
 		{
 			siteName: TRUST_SITE_NAME,
-			baseUrl: TRUST_SITE_URL,
-			defaultOgImage: TRUST_OG_IMAGE,
+			baseUrl: SITE_URL,
+			defaultOgImage: OG_IMAGE,
 		},
 	);
 
