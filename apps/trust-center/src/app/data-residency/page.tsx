@@ -101,10 +101,7 @@ export default function DataResidencyPage() {
 										</td>
 										<td className="px-6 py-4">
 											<span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--color-success-soft)] px-2.5 py-0.5 text-xs font-medium text-[var(--color-success-text)]">
-												<span className="relative flex h-2 w-2">
-													<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
-													<span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
-												</span>
+												<span className="inline-flex h-2 w-2 rounded-full bg-success" />
 												{t('common.status.operational')}
 											</span>
 										</td>

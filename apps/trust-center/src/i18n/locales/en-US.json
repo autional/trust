@@ -232,7 +232,7 @@
   "privacy.dpoAddress": "Address:",
   "privacy.dpoAddressText": "Autional Data Protection Office, Shenzhen, China",
   "privacy.lastUpdated": "Last Updated",
-  "privacy.updatedDate": "May 9, 2025",
+  "privacy.updatedDate": "October 5, 2026",
   "privacy.sections.collection": [
     "Account information: username, email, phone number, password hash (irreversibly encrypted storage).",
     "Usage data: login time, IP address, device fingerprint, operation logs (for security auditing and anomaly detection).",
