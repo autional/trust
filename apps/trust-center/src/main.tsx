@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
-import { ROUTER_BASENAME } from '@autional/shared';
+import { ROUTER_BASENAME, isRetryableError } from '@autional/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import './non-tenant-segments';
@@ -13,11 +13,9 @@ const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			staleTime: 5 * 60 * 1000,
-			retry: (failureCount, error: unknown) => {
-				const status = (error as { response?: { status?: number } })?.response?.status;
-				if (status === 401 || status === 403) return false;
-				return failureCount < 2;
-			},
+			// 重试策略唯一实现：只重试「重试可能改变结果」的错误（@autional/shared/utils/query-state
+			// 的 isRetryableError：无状态码 / 5xx / 408 / 429）；4xx（含 404/401/403）一律不重试。
+			retry: (failureCount, error) => isRetryableError(error) && failureCount < 1,
 			refetchOnWindowFocus: false,
 		},
 	},
