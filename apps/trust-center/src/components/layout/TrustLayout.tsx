@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Menu, X, Shield, ChevronUp } from 'lucide-react';
 import { LANDING_SITE_URL, STATUS_PAGE_URL, DEVELOPER_PORTAL_URL } from '@autional/shared';
 import { ThemeToggle, LanguageSwitcher } from '@autional/ui';
+import { NavGroupMenu } from './NavGroupMenu';
 
 export default function TrustLayout() {
 	const { t } = useTranslation();
@@ -11,18 +12,48 @@ export default function TrustLayout() {
 	const [showScrollTop, setShowScrollTop] = useState(false);
 	const location = useLocation();
 
-	const navLinks = [
+	// 11 个页面按主题收成 4 组（一级导航 + 页脚共用同一套分组，防两处漂移）。
+	// 组内落地页用页面自身标题键（security.title 等）——导航名与页面 H1 同一出处。
+	const navGroups = [
+		{
+			label: t('layout.security'),
+			base: '/security',
+			items: [
+				{ to: '/security', label: t('security.title') },
+				{ to: '/storage-security', label: t('nav.storageSecurity') },
+				{ to: '/vulnerability-disclosure', label: t('nav.vulnerabilityDisclosure') },
+			],
+		},
+		{
+			label: t('layout.compliance'),
+			base: '/compliance',
+			items: [
+				{ to: '/compliance', label: t('compliance.title') },
+				{ to: '/audit-reports', label: t('nav.auditReports') },
+				{ to: '/data-residency', label: t('nav.dataResidency') },
+			],
+		},
+		{
+			label: t('layout.privacy'),
+			base: '/privacy',
+			items: [
+				{ to: '/privacy', label: t('privacy.title') },
+				{ to: '/subprocessors', label: t('nav.subprocessors') },
+			],
+		},
+		{
+			label: t('layout.incidents'),
+			base: '/incidents',
+			items: [
+				{ to: '/incidents', label: t('incidents.title') },
+				{ to: '/security-alerts', label: t('nav.securityAlerts') },
+			],
+		},
+	];
+
+	const mobileLinks = [
 		{ to: '/', label: t('nav.overview'), end: true },
-		{ to: '/compliance', label: t('nav.compliance') },
-		{ to: '/security', label: t('nav.security') },
-		{ to: '/security-alerts', label: t('nav.securityAlerts') },
-		{ to: '/data-residency', label: t('nav.dataResidency') },
-		{ to: '/audit-reports', label: t('nav.auditReports') },
-		{ to: '/incidents', label: t('nav.incidents') },
-		{ to: '/privacy', label: t('nav.privacy') },
-		{ to: '/subprocessors', label: t('nav.subprocessors') },
-		{ to: '/vulnerability-disclosure', label: t('nav.vulnerabilityDisclosure') },
-		{ to: '/storage-security', label: t('nav.storageSecurity') },
+		...navGroups.flatMap((group) => group.items.map((item) => ({ ...item, end: true }))),
 	];
 
 	useEffect(() => {
@@ -57,27 +88,32 @@ export default function TrustLayout() {
 					</Link>
 
 					{/* Desktop Nav */}
-					<nav className="hidden items-center gap-1 md:flex">
-						{navLinks.map((link) => (
-							<NavLink
-								key={link.to}
-								to={link.to}
-								end={link.end}
-								className={({ isActive }) =>
-									`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-										isActive
-											? 'bg-primary-50 text-primary-700 dark:bg-white/10 dark:text-sky-300'
-											: 'text-[var(--color-text-muted)] hover:bg-neutral-50 hover:text-[var(--color-text-primary)] dark:hover:bg-elevated'
-									}`
-								}
-							>
-								{link.label}
-							</NavLink>
+					<nav className="hidden items-center gap-1 lg:flex">
+						<NavLink
+							to="/"
+							end
+							className={({ isActive }) =>
+								`whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+									isActive
+										? 'bg-primary-50 text-primary-700 dark:bg-white/10 dark:text-sky-300'
+										: 'text-[var(--color-text-muted)] hover:bg-neutral-50 hover:text-[var(--color-text-primary)] dark:hover:bg-elevated'
+								}`
+							}
+						>
+							{t('nav.overview')}
+						</NavLink>
+						{navGroups.map((group) => (
+							<NavGroupMenu
+								key={group.base}
+								label={group.label}
+								base={group.base}
+								items={group.items}
+							/>
 						))}
 					</nav>
 
 					{/* Desktop Controls */}
-					<div className="hidden items-center gap-2 md:flex">
+					<div className="hidden items-center gap-2 lg:flex">
 						<LanguageSwitcher
 							className="inline-flex h-11 items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-50 px-3 text-xs font-medium text-[var(--color-text-muted)] transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:bg-surface dark:hover:bg-elevated"
 							showIcon
@@ -90,7 +126,7 @@ export default function TrustLayout() {
 					</div>
 
 					{/* Mobile menu button */}
-					<div className="flex items-center gap-2 md:hidden">
+					<div className="flex items-center gap-2 lg:hidden">
 						<LanguageSwitcher
 							className="inline-flex h-11 items-center gap-1.5 rounded-md border border-neutral-200 bg-neutral-50 px-3 text-xs font-medium text-[var(--color-text-muted)] transition-colors hover:bg-neutral-100 dark:border-neutral-700 dark:bg-surface dark:hover:bg-elevated"
 							showIcon
@@ -112,9 +148,9 @@ export default function TrustLayout() {
 
 				{/* Mobile Nav */}
 				{mobileOpen && (
-					<div className="border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-surface md:hidden">
+					<div className="border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-surface lg:hidden">
 						<div className="space-y-1 px-4 py-3">
-							{navLinks.map((link) => (
+							{mobileLinks.map((link) => (
 								<NavLink
 									key={link.to}
 									to={link.to}
@@ -143,7 +179,7 @@ export default function TrustLayout() {
 			{/* Footer */}
 			<footer className="border-t border-neutral-200 bg-neutral-50 dark:border-neutral-800 dark:bg-surface">
 				<div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-					<div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+					<div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-6">
 						<div className="col-span-2 md:col-span-1">
 							<Link to="/" className="flex items-center gap-2">
 								<Shield className="h-5 w-5 text-primary-600 dark:text-sky-300" />
@@ -155,92 +191,25 @@ export default function TrustLayout() {
 								{t('layout.description')}
 							</p>
 						</div>
-						<div>
-							<h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
-								{t('layout.security')}
-							</h3>
-							<ul className="mt-3 space-y-2">
-								<li>
-									<Link
-										to="/security"
-										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
-									>
-										{t('nav.security')}
-									</Link>
-								</li>
-								<li>
-									<Link
-										to="/compliance"
-										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
-									>
-										{t('nav.compliance')}
-									</Link>
-								</li>
-								<li>
-									<Link
-										to="/incidents"
-										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
-									>
-										{t('nav.incidents')}
-									</Link>
-								</li>
-								<li>
-									<Link
-										to="/vulnerability-disclosure"
-										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
-									>
-										{t('nav.vulnerabilityDisclosure')}
-									</Link>
-								</li>
-								<li>
-									<Link
-										to="/storage-security"
-										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
-									>
-										{t('nav.storageSecurity')}
-									</Link>
-								</li>
-							</ul>
-						</div>
-						<div>
-							<h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
-								{t('layout.compliance')}
-							</h3>
-							<ul className="mt-3 space-y-2">
-								<li>
-									<Link
-										to="/audit-reports"
-										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
-									>
-										{t('nav.auditReports')}
-									</Link>
-								</li>
-								<li>
-									<Link
-										to="/data-residency"
-										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
-									>
-										{t('nav.dataResidency')}
-									</Link>
-								</li>
-								<li>
-									<Link
-										to="/privacy"
-										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
-									>
-										{t('nav.privacy')}
-									</Link>
-								</li>
-								<li>
-									<Link
-										to="/subprocessors"
-										className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
-									>
-										{t('nav.subprocessors')}
-									</Link>
-								</li>
-							</ul>
-						</div>
+						{navGroups.map((group) => (
+							<div key={group.base}>
+								<h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
+									{group.label}
+								</h3>
+								<ul className="mt-3 space-y-2">
+									{group.items.map((item) => (
+										<li key={item.to}>
+											<Link
+												to={item.to}
+												className="text-sm text-[var(--color-text-muted)] hover:text-primary-600 dark:hover:text-primary-400"
+											>
+												{item.label}
+											</Link>
+										</li>
+									))}
+								</ul>
+							</div>
+						))}
 						<div>
 							<h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
 								{t('layout.brand')}
