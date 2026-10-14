@@ -31,7 +31,7 @@ export default function DataResidencyPage() {
 		title: t('dataResidency.title'),
 		description:
 			i18n.language === 'zh-CN'
-				? 'Autional 数据驻留 — 数据存储区域、跨境传输原则与数据保留策略。'
+				? 'Autional 数据驻留 — 数据存储区域、跨境传输原则与数据保留策略。' // i18n-exempt: SEO 描述区域三元（i18n.language 判定）
 				: 'Autional Data Residency — Data storage regions, cross-border transfer principles and retention policies.',
 	});
 

@@ -37,7 +37,7 @@ export default function AuditReportsPage() {
 		title: t('auditReports.title'),
 		description:
 			i18n.language === 'zh-CN'
-				? 'Autional 审计报告 — 审计日志摘要、哈希链完整性证明与合规建设进展。'
+				? 'Autional 审计报告 — 审计日志摘要、哈希链完整性证明与合规建设进展。' // i18n-exempt: SEO 描述区域三元（i18n.language 判定）
 				: 'Autional Audit Reports — Audit log summaries, hash chain integrity proofs and compliance progress.',
 	});
 
@@ -358,7 +358,7 @@ export default function AuditReportsPage() {
 							</p>
 						</div>
 						<a
-							href={`mailto:support@autional.net?subject=${encodeURIComponent(i18n.language === 'zh-CN' ? '合规文档咨询' : 'Compliance Document Inquiry')}`}
+							href={`mailto:support@autional.net?subject=${encodeURIComponent(i18n.language === 'zh-CN' /* i18n-exempt: mailto 主题区域三元（i18n.language 判定） */ ? '合规文档咨询' : 'Compliance Document Inquiry')}`}
 							className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
 						>
 							{t('auditReports.contactTeam')}

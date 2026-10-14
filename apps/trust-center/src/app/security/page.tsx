@@ -33,7 +33,7 @@ export default function SecurityPage() {
 		title: t('security.title'),
 		description:
 			i18n.language === 'zh-CN'
-				? 'Autional 安全架构 — 零信任架构、加密、基础设施安全与可观测性。'
+				? 'Autional 安全架构 — 零信任架构、加密、基础设施安全与可观测性。' // i18n-exempt: SEO 描述区域三元（i18n.language 判定）
 				: 'Autional Security Architecture — Zero trust, encryption, infrastructure security and observability.',
 	});
 

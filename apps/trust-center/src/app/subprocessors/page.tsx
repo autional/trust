@@ -23,7 +23,7 @@ export default function SubprocessorsPage() {
 		title: t('subprocessors.title'),
 		description:
 			i18n.language === 'zh-CN'
-				? 'Autional 子处理商清单 — GDPR Art.28 要求的子处理商公示，包括名称、服务、位置与处理目的。'
+				? 'Autional 子处理商清单 — GDPR Art.28 要求的子处理商公示，包括名称、服务、位置与处理目的。' // i18n-exempt: SEO 描述区域三元（i18n.language 判定）
 				: 'Autional Subprocessor List — GDPR Art.28 required subprocessor disclosure, including name, service, location, and purpose.',
 	});
 

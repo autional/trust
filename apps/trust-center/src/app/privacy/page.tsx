@@ -29,7 +29,7 @@ export default function PrivacyPage() {
 		title: t('privacy.title'),
 		description:
 			i18n.language === 'zh-CN'
-				? 'Autional 隐私政策 — 数据收集、使用、共享、保留与您的隐私权利说明。'
+				? 'Autional 隐私政策 — 数据收集、使用、共享、保留与您的隐私权利说明。' // i18n-exempt: SEO 描述区域三元（i18n.language 判定）
 				: 'Autional Privacy Policy — Data collection, usage, sharing, retention, and your privacy rights.',
 	});
 

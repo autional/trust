@@ -48,7 +48,7 @@ export default function OverviewPage() {
 		title: t('overview.title'),
 		description:
 			i18n.language?.startsWith('zh')
-				? 'Autional Trust Center 总览 — 安全实践、数据保护与合规建设进展的透明展示。'
+				? 'Autional Trust Center 总览 — 安全实践、数据保护与合规建设进展的透明展示。' // i18n-exempt: SEO 描述区域三元（i18n.language 判定）
 				: 'Autional Trust Center Overview — Transparency on our security practices, data protection, and compliance progress.',
 	});
 
@@ -128,9 +128,9 @@ export default function OverviewPage() {
 						<div className="flex flex-wrap items-center justify-between gap-4">
 							<div className="flex items-center gap-3">
 								<div
-									className={`flex h-10 w-10 items-center justify-center rounded-full ${status.overallStatus === 'compliant' || status.overallStatus === '合规' ? 'bg-[var(--color-success-soft)] text-[var(--color-success-text)]' : 'bg-[var(--color-warning-soft)] text-[var(--color-warning-text)]'}`}
+									className={`flex h-10 w-10 items-center justify-center rounded-full ${status.overallStatus === 'compliant' || status.overallStatus === '合规' /* i18n-exempt: 服务端域值归一匹配（历史数据含中文值），非显示文案 */ ? 'bg-[var(--color-success-soft)] text-[var(--color-success-text)]' : 'bg-[var(--color-warning-soft)] text-[var(--color-warning-text)]'}`}
 								>
-									{status.overallStatus === 'compliant' || status.overallStatus === '合规' ? (
+									{status.overallStatus === 'compliant' || status.overallStatus === '合规' /* i18n-exempt: 服务端域值归一匹配（历史数据含中文值），非显示文案 */ ? (
 										<CheckCircle2 className="h-5 w-5" />
 									) : (
 										<AlertTriangle className="h-5 w-5" />
@@ -138,7 +138,7 @@ export default function OverviewPage() {
 								</div>
 								<div>
 									<div className="text-sm font-medium text-[var(--color-text-primary)]">
-										{status.overallStatus === 'compliant' || status.overallStatus === '合规'
+										{status.overallStatus === 'compliant' || status.overallStatus === '合规' /* i18n-exempt: 服务端域值归一匹配（历史数据含中文值），非显示文案 */
 											? t('common.realTimeLabel')
 											: t('overview.statusBuilding')}
 									</div>

@@ -11,7 +11,7 @@ export default function IncidentsPage() {
 		title: t('incidents.title'),
 		description:
 			i18n.language === 'zh-CN'
-				? 'Autional 安全事件响应 — 数据泄露通知、事件响应流程与透明度承诺。'
+				? 'Autional 安全事件响应 — 数据泄露通知、事件响应流程与透明度承诺。' // i18n-exempt: SEO 描述区域三元（i18n.language 判定）
 				: 'Autional Security Incident Response — Breach notifications, incident response process and our transparency commitment.',
 	});
 

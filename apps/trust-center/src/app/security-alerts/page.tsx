@@ -34,7 +34,7 @@ export default function SecurityAlertsPage() {
 		title: t('securityAlerts.title'),
 		description:
 			i18n.language?.startsWith('zh')
-				? '订阅 Autional 安全告警，获取数据泄露通知、漏洞预警和安全更新。'
+				? '订阅 Autional 安全告警，获取数据泄露通知、漏洞预警和安全更新。' // i18n-exempt: SEO 描述区域三元（i18n.language 判定）
 				: 'Subscribe to Autional security alerts for data breach notifications, vulnerability warnings, and security updates.',
 	});
 

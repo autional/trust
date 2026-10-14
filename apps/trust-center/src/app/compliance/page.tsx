@@ -34,7 +34,7 @@ export default function CompliancePage() {
 		title: t('compliance.title'),
 		description:
 			i18n.language === 'zh-CN'
-				? 'Autional 合规建设进展 — 我们对照的合规框架、当前状态与建设情况说明。'
+				? 'Autional 合规建设进展 — 我们对照的合规框架、当前状态与建设情况说明。' // i18n-exempt: SEO 描述区域三元（i18n.language 判定）
 				: 'Autional Compliance Progress — The compliance frameworks we track, their current status, and our build-out progress.',
 	});
 
@@ -239,7 +239,7 @@ export default function CompliancePage() {
 							</p>
 						</div>
 						<a
-							href={`mailto:support@autional.net?subject=${encodeURIComponent(i18n.language === 'zh-CN' ? '合规报告申请' : 'Compliance Report Request')}`}
+							href={`mailto:support@autional.net?subject=${encodeURIComponent(i18n.language === 'zh-CN' /* i18n-exempt: mailto 主题区域三元（i18n.language 判定） */ ? '合规报告申请' : 'Compliance Report Request')}`}
 							className="inline-flex shrink-0 items-center gap-2 rounded-md bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-700"
 						>
 							{t('compliance.applyReport')}

@@ -11,7 +11,7 @@ export default function StorageSecurityPage() {
 		title: t('storageSecurity.title'),
 		description:
 			i18n.language === 'zh-CN'
-				? 'Autional 存储安全 — 加密算法、静态/传输加密状态与密钥管理。'
+				? 'Autional 存储安全 — 加密算法、静态/传输加密状态与密钥管理。' // i18n-exempt: SEO 描述区域三元（i18n.language 判定）
 				: 'Autional Storage Security — Encryption algorithms, at-rest/in-transit status and key management.',
 	});
 
