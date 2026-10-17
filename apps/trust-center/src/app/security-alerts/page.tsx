@@ -131,7 +131,7 @@ export default function SecurityAlertsPage() {
 										type="email"
 										{...register('email')}
 										placeholder="your@email.com"
-										className={`w-full rounded-md border py-2.5 pl-10 pr-3 text-sm bg-white dark:bg-surface dark:text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-primary-500 ${errors.email ? 'border-danger-soft focus:ring-danger' : 'border-neutral-300 dark:border-neutral-700'}`}
+										className={`w-full rounded-md border py-2.5 pl-10 pr-3 text-sm bg-white dark:bg-surface dark:text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-primary-500 ${errors.email ? 'border-danger-soft focus:ring-danger' : 'border-[var(--color-border-strong)]'}`}
 									/>
 								</div>
 								{errors.email && (
@@ -156,7 +156,7 @@ export default function SecurityAlertsPage() {
 									type="text"
 									{...register('company')}
 									placeholder={t('securityAlerts.companyPlaceholder')}
-									className="mt-1.5 w-full rounded-md border border-neutral-300 py-2.5 px-3 text-sm bg-white dark:bg-surface dark:text-white dark:border-neutral-700 placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-primary-500"
+									className="mt-1.5 w-full rounded-md border border-[var(--color-border-strong)] py-2.5 px-3 text-sm bg-white dark:bg-surface dark:text-white placeholder:text-[var(--color-text-muted)] focus:outline-none focus:ring-2 focus:ring-primary-500"
 								/>
 							</div>
 
@@ -193,7 +193,7 @@ export default function SecurityAlertsPage() {
 																	: [...field.value, key];
 																field.onChange(next);
 															}}
-															className="mt-0.5 h-4 w-4 rounded-xs border-neutral-300 text-primary-600 focus:ring-primary-500"
+															className="mt-0.5 h-4 w-4 rounded-xs border-[var(--color-border-strong)] text-primary-600 focus:ring-primary-500"
 														/>
 														<div>
 															<span className="text-sm font-medium text-[var(--color-text-primary)]">
