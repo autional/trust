@@ -1,4 +1,5 @@
 import { useTrustSEO } from '@/lib/seo';
+import { frameworkLabel } from '@/lib/framework-labels';
 import { useComplianceStatus } from '@/hooks/use-trust-api';
 import { useTranslation } from 'react-i18next';
 import SecurityScore from '@/components/SecurityScore';
@@ -34,14 +35,6 @@ const pillarIcons: Record<string, React.ComponentType<{ className?: string }>> =
 	securityTesting: Shield,
 };
 
-const FRAMEWORK_LABELS: Record<string, string> = {
-	gdpr: 'GDPR',
-	iso27001: 'ISO 27001',
-	iso27001_2022: 'ISO 27001',
-	soc2: 'SOC 2',
-	sox: 'SOX',
-};
-
 export default function OverviewPage() {
 	const { t, i18n } = useTranslation();
 	useTrustSEO({
@@ -64,7 +57,7 @@ export default function OverviewPage() {
 	const frameworkPills: { key: string; label: string; compliant?: boolean }[] = [];
 	const seenFrameworkLabels = new Set<string>();
 	for (const key of status?.frameworksEnabled ?? []) {
-		const label = FRAMEWORK_LABELS[key] ?? key;
+		const label = frameworkLabel(key);
 		if (seenFrameworkLabels.has(label)) continue;
 		seenFrameworkLabels.add(label);
 		frameworkPills.push({ key, label, compliant: compliantFlags[key] });

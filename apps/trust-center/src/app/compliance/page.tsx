@@ -1,4 +1,5 @@
 import { useTrustSEO } from '@/lib/seo';
+import { frameworkLabel } from '@/lib/framework-labels';
 import {
 	useAuditFindings,
 	useComplianceStatus,
@@ -44,6 +45,9 @@ export default function CompliancePage() {
 	const { data: certsData } = usePublicCertifications();
 	const publicScore = scoreData?.overallScore ?? null;
 	const publicStandards = statusData?.frameworksEnabled ?? [];
+	const publicFrameworkLabels: string[] = Array.from(
+		new Set<string>(publicStandards.map((s: string) => frameworkLabel(s))),
+	);
 	const apiCerts = certsData?.items?.length ? certsData.items : null;
 
 	return (
@@ -73,14 +77,14 @@ export default function CompliancePage() {
 								<span className="text-lg text-[var(--color-text-muted)]">/ 100</span>
 							</div>
 						</div>
-						{publicStandards.length > 0 && (
+						{publicFrameworkLabels.length > 0 && (
 							<div className="mt-4 flex flex-wrap gap-2">
-								{publicStandards.map((s: string) => (
+								{publicFrameworkLabels.map((label) => (
 									<span
-										key={s}
+										key={label}
 										className="rounded-full bg-primary-100 px-3 py-1 text-xs font-medium text-primary-700 dark:bg-primary-800 dark:text-primary-300"
 									>
-										{s}
+										{label}
 									</span>
 								))}
 							</div>
