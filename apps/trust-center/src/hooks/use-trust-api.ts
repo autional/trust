@@ -1,4 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+import type {
+	PublicComplianceStatusSnapshot,
+	PublicSecurityScoreSnapshot,
+} from '@/lib/assessment-view';
 import {
 	getPenTestReports,
 	getAuditFindings,
@@ -17,14 +21,14 @@ import {
 } from '@autional/shared/generated/api';
 
 export function useComplianceStatus() {
-	return useQuery({
+	return useQuery<PublicComplianceStatusSnapshot | null>({
 		queryKey: ['compliance', 'status'],
 		queryFn: compliancePublicStatus,
 	});
 }
 
 export function useSecurityScore() {
-	return useQuery({
+	return useQuery<PublicSecurityScoreSnapshot | null>({
 		queryKey: ['compliance', 'security-score'],
 		queryFn: compliancePublicSecurityScore,
 	});

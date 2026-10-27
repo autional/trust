@@ -31,6 +31,17 @@ vi.mock('react-i18next', () => {
 		'common.controlId': '控制编号：',
 		'common.dueDate': '截止日期：',
 		'common.status.notCertified': '未认证',
+		'compliance.frameworkColumn': '框架',
+		'compliance.statusColumn': '状态',
+		'compliance.coverageColumn': '评估覆盖',
+		'compliance.lastAssessedColumn': '最近评估',
+		'compliance.tableCaption': '各合规框架的当前评估状态与覆盖度',
+		'compliance.status.compliant': '合规',
+		'compliance.status.non_compliant': '存在待整改项',
+		'compliance.status.not_assessed': '待评估',
+		'compliance.status.evaluation_error': '评估异常',
+		'compliance.coverageSummary': '已评估 {{assessed}}/{{total}} 项控制（{{percent}}%）',
+		'compliance.coverageUnavailable': '暂无覆盖数据',
 	};
 	return {
 		useTranslation: () => ({
@@ -41,7 +52,14 @@ vi.mock('react-i18next', () => {
 					const val = certMap[fieldMatch[1]]?.[fieldMatch[2]];
 					if (val !== undefined) return String(val);
 				}
-				return zhCN[key] || key;
+				const template = zhCN[key] || key;
+				if (opts && typeof opts === 'object') {
+					return Object.entries(opts).reduce(
+						(acc, [name, value]) => acc.replaceAll(`{{${name}}}`, String(value)),
+						template,
+					);
+				}
+				return template;
 			},
 			i18n: { language: 'zh-CN' },
 		}),
@@ -54,21 +72,21 @@ vi.mock('@autional/shared', () => ({
 
 vi.mock('@/hooks/use-trust-api', () => ({
 	useAuditFindings: vi.fn(),
-	useComplianceStatus: () => ({
+	useComplianceStatus: vi.fn(() => ({
 		data: null,
 		isLoading: false,
 		isError: false,
-	}),
-	useSecurityScore: () => ({
+	})),
+	useSecurityScore: vi.fn(() => ({
 		data: null,
 		isLoading: false,
 		isError: false,
-	}),
-	usePublicCertifications: () => ({
+	})),
+	usePublicCertifications: vi.fn(() => ({
 		data: null,
 		isLoading: false,
 		isError: false,
-	}),
+	})),
 }));
 
 vi.mock('@autional/ui', () => ({
@@ -88,7 +106,7 @@ vi.mock('@autional/ui', () => ({
 	),
 }));
 
-import { useAuditFindings } from '@/hooks/use-trust-api';
+import { useAuditFindings, useComplianceStatus } from '@/hooks/use-trust-api';
 
 function renderCompliance() {
 	return render(
@@ -189,5 +207,74 @@ describe('CompliancePage', () => {
 		renderCompliance();
 
 		expect(screen.getByText('审计发现加载失败，请登录后查看完整信息。')).toBeInTheDocument();
+	});
+
+	it('renders framework assessment table with four-state status and coverage', () => {
+		vi.mocked(useAuditFindings).mockReturnValue({
+			data: { items: [] },
+			isLoading: false,
+			isError: false,
+		} as any);
+		vi.mocked(useComplianceStatus).mockReturnValue({
+			data: {
+				overallStatus: 'not_assessed',
+				evaluationError: false,
+				lastAuditDate: '2026-10-01',
+				frameworkAssessments: [
+					{
+						framework: 'iso27001',
+						displayName: 'ISO 27001',
+						status: 'not_assessed',
+						controlsTotal: 10,
+						controlsAssessed: 7,
+						controlsUnknown: 3,
+					},
+					{
+						framework: 'sox',
+						displayName: 'SOX ITGC',
+						status: 'non_compliant',
+						controlsTotal: 10,
+						controlsAssessed: 4,
+						controlsUnknown: 6,
+					},
+				],
+				assessmentCoverage: { assessed: 11, total: 20, percent: 55 },
+			},
+			isLoading: false,
+			isError: false,
+		} as any);
+
+		renderCompliance();
+
+		expect(screen.getByText('SOX ITGC')).toBeInTheDocument();
+		expect(screen.getByText('待评估')).toBeInTheDocument();
+		expect(screen.getByText('存在待整改项')).toBeInTheDocument();
+		expect(screen.getByText('已评估 7/10 项控制（70%）')).toBeInTheDocument();
+		expect(screen.getByText('已评估 4/10 项控制（40%）')).toBeInTheDocument();
+		// 两行共用同一"最近评估"日期（平台级），不是每框架独立日期
+		expect(screen.getAllByText('2026-10-01')).toHaveLength(2);
+	});
+
+	it('falls back to legacy frameworks_enabled when framework_assessments is absent', () => {
+		vi.mocked(useAuditFindings).mockReturnValue({
+			data: { items: [] },
+			isLoading: false,
+			isError: false,
+		} as any);
+		vi.mocked(useComplianceStatus).mockReturnValue({
+			data: {
+				overallStatus: 'compliant',
+				frameworksEnabled: ['gdpr'],
+				gdprCompliant: true,
+			},
+			isLoading: false,
+			isError: false,
+		} as any);
+
+		renderCompliance();
+
+		// 回退路径：旧字段 true → compliant；覆盖度缺失 → 明确"暂无覆盖数据"
+		expect(screen.getByText('合规')).toBeInTheDocument();
+		expect(screen.getByText('暂无覆盖数据')).toBeInTheDocument();
 	});
 });

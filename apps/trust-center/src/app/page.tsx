@@ -1,5 +1,6 @@
 import { useTrustSEO } from '@/lib/seo';
-import { frameworkLabel } from '@/lib/framework-labels';
+import { ASSESSMENT_STATUS_TONE } from '@/lib/framework-labels';
+import { buildComplianceStatusView } from '@/lib/assessment-view';
 import { useComplianceStatus } from '@/hooks/use-trust-api';
 import { useTranslation } from 'react-i18next';
 import SecurityScore from '@/components/SecurityScore';
@@ -47,21 +48,10 @@ export default function OverviewPage() {
 
 	const { data: status, isLoading, isError } = useComplianceStatus();
 
-	// 徽标以 frameworks_enabled 为准：未启用的框架不展示（其合规标志位可能是历史残留）
-	const compliantFlags: Record<string, boolean | undefined> = {
-		gdpr: status?.gdprCompliant,
-		iso27001: status?.iso27001Compliant,
-		iso27001_2022: status?.iso27001Compliant,
-		sox: status?.soxCompliant,
-	};
-	const frameworkPills: { key: string; label: string; compliant?: boolean }[] = [];
-	const seenFrameworkLabels = new Set<string>();
-	for (const key of status?.frameworksEnabled ?? []) {
-		const label = frameworkLabel(key);
-		if (seenFrameworkLabels.has(label)) continue;
-		seenFrameworkLabels.add(label);
-		frameworkPills.push({ key, label, compliant: compliantFlags[key] });
-	}
+	// 徽标与总览口径单点在 lib/assessment-view（合规页共用）：四态 + 覆盖度，旧字段仅回退。
+	const statusView = buildComplianceStatusView(status);
+	const frameworkPills = statusView.frameworks;
+	const overallAssessmentStatus = statusView.overallStatus;
 
 	const statusDetailParts = [
 		status?.lastAuditDate ? t('overview.lastAuditLine', { date: status.lastAuditDate }) : null,
@@ -121,9 +111,9 @@ export default function OverviewPage() {
 						<div className="flex flex-wrap items-center justify-between gap-4">
 							<div className="flex items-center gap-3">
 								<div
-									className={`flex h-10 w-10 items-center justify-center rounded-full ${status.overallStatus === 'compliant' || status.overallStatus === '合规' /* i18n-exempt: 服务端域值归一匹配（历史数据含中文值），非显示文案 */ ? 'bg-[var(--color-success-soft)] text-[var(--color-success-text)]' : 'bg-[var(--color-warning-soft)] text-[var(--color-warning-text)]'}`}
+									className={`flex h-10 w-10 items-center justify-center rounded-full ${ASSESSMENT_STATUS_TONE[overallAssessmentStatus]}`}
 								>
-									{status.overallStatus === 'compliant' || status.overallStatus === '合规' /* i18n-exempt: 服务端域值归一匹配（历史数据含中文值），非显示文案 */ ? (
+									{overallAssessmentStatus === 'compliant' ? (
 										<CheckCircle2 className="h-5 w-5" />
 									) : (
 										<AlertTriangle className="h-5 w-5" />
@@ -131,9 +121,9 @@ export default function OverviewPage() {
 								</div>
 								<div>
 									<div className="text-sm font-medium text-[var(--color-text-primary)]">
-										{status.overallStatus === 'compliant' || status.overallStatus === '合规' /* i18n-exempt: 服务端域值归一匹配（历史数据含中文值），非显示文案 */
+										{overallAssessmentStatus === 'compliant'
 											? t('common.realTimeLabel')
-											: t('overview.statusBuilding')}
+											: t(`overview.assessmentStatus.${overallAssessmentStatus}`)}
 									</div>
 									{statusDetailParts.length > 0 && (
 										<div className="text-xs text-[var(--color-text-muted)]">
@@ -146,9 +136,18 @@ export default function OverviewPage() {
 								{frameworkPills.map((pill) => (
 									<span
 										key={pill.key}
-										className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${pill.compliant ? 'bg-[var(--color-success-soft)] text-[var(--color-success-text)]' : 'bg-neutral-100 text-[var(--color-text-muted)] dark:bg-surface'}`}
+										className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${ASSESSMENT_STATUS_TONE[pill.status]}`}
+										title={t(`overview.assessmentStatus.${pill.status}`)}
 									>
-										{pill.compliant && <CheckCircle2 className="h-3 w-3" />} {pill.label}
+										{pill.status === 'compliant' && <CheckCircle2 className="h-3 w-3" />} {pill.label}
+										{pill.coverage && (
+											<span className="opacity-75">
+												{t('overview.coverageShort', {
+													assessed: pill.coverage.assessed,
+													total: pill.coverage.total,
+												})}
+											</span>
+										)}
 									</span>
 								))}
 							</div>

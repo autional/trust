@@ -1,5 +1,6 @@
 import { useTrustSEO } from '@/lib/seo';
-import { frameworkLabel } from '@/lib/framework-labels';
+import { ASSESSMENT_STATUS_TONE } from '@/lib/framework-labels';
+import { buildComplianceStatusView } from '@/lib/assessment-view';
 import {
 	useAuditFindings,
 	useComplianceStatus,
@@ -43,11 +44,11 @@ export default function CompliancePage() {
 	const { data: statusData } = useComplianceStatus();
 	const { data: scoreData } = useSecurityScore();
 	const { data: certsData } = usePublicCertifications();
-	const publicScore = scoreData?.overallScore ?? null;
-	const publicStandards = statusData?.frameworksEnabled ?? [];
-	const publicFrameworkLabels: string[] = Array.from(
-		new Set<string>(publicStandards.map((s: string) => frameworkLabel(s))),
-	);
+	// 评分可用性：score_available=false 时 overall_score 无意义，不把它当 0 分展示。
+	const publicScore = scoreData?.scoreAvailable === false ? null : (scoreData?.overallScore ?? null);
+	// 框架状态/覆盖度口径单点在 lib/assessment-view（总览页共用）。
+	const statusView = buildComplianceStatusView(statusData);
+	const publicFrameworkLabels = statusView.frameworks.map((framework) => framework.label);
 	const apiCerts = certsData?.items?.length ? certsData.items : null;
 
 	return (
@@ -77,6 +78,15 @@ export default function CompliancePage() {
 								<span className="text-lg text-[var(--color-text-muted)]">/ 100</span>
 							</div>
 						</div>
+						{statusView.coverage && (
+							<p className="mt-2 text-sm text-[var(--color-text-muted)]">
+								{t('compliance.coverageSummary', {
+									assessed: statusView.coverage.assessed,
+									total: statusView.coverage.total,
+									percent: Math.round(statusView.coverage.percent),
+								})}
+							</p>
+						)}
 						{publicFrameworkLabels.length > 0 && (
 							<div className="mt-4 flex flex-wrap gap-2">
 								{publicFrameworkLabels.map((label) => (
@@ -89,6 +99,61 @@ export default function CompliancePage() {
 								))}
 							</div>
 						)}
+					</div>
+				)}
+
+				{/* Framework assessment table：框架 / 状态 / 覆盖度 / 最近评估 */}
+				{statusView.frameworks.length > 0 && (
+					<div className="mt-8 overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-card dark:border-neutral-800 dark:bg-surface">
+						<table className="min-w-full divide-y divide-neutral-200 text-sm dark:divide-neutral-800">
+							<caption className="sr-only">{t('compliance.tableCaption')}</caption>
+							<thead>
+								<tr className="text-left text-xs uppercase tracking-wide text-[var(--color-text-muted)]">
+									<th scope="col" className="px-4 py-3 font-medium">
+										{t('compliance.frameworkColumn')}
+									</th>
+									<th scope="col" className="px-4 py-3 font-medium">
+										{t('compliance.statusColumn')}
+									</th>
+									<th scope="col" className="px-4 py-3 font-medium">
+										{t('compliance.coverageColumn')}
+									</th>
+									<th scope="col" className="px-4 py-3 font-medium">
+										{t('compliance.lastAssessedColumn')}
+									</th>
+								</tr>
+							</thead>
+							<tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">
+								{statusView.frameworks.map((framework) => (
+									<tr key={framework.key}>
+										<td className="px-4 py-3 font-medium text-[var(--color-text-primary)]">
+											{framework.label}
+										</td>
+										<td className="px-4 py-3">
+											<span
+												className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${ASSESSMENT_STATUS_TONE[framework.status]}`}
+											>
+												{t(`compliance.status.${framework.status}`)}
+											</span>
+										</td>
+										<td className="px-4 py-3 text-[var(--color-text-muted)]">
+											{framework.coverage
+												? t('compliance.coverageSummary', {
+														assessed: framework.coverage.assessed,
+														total: framework.coverage.total,
+														percent: Math.round(
+															(framework.coverage.assessed / framework.coverage.total) * 100,
+														),
+													})
+												: t('compliance.coverageUnavailable')}
+										</td>
+										<td className="px-4 py-3 text-[var(--color-text-muted)]">
+											{statusData?.lastAuditDate || '—'}
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
 					</div>
 				)}
 

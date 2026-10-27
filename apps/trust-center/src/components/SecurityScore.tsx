@@ -83,6 +83,18 @@ export default function SecurityScore() {
 		);
 	}
 
+	// 无任何框架完成评估时后端给 score_available=false：分数无意义，不显示 0 分假象。
+	if (score.scoreAvailable === false) {
+		return (
+			<div className="flex items-center gap-3 rounded-xl border border-neutral-200 bg-neutral-50 p-6 dark:border-neutral-800 dark:bg-surface/50">
+				<AlertTriangle className="h-5 w-5 text-[var(--color-warning-text)]" />
+				<span className="text-sm text-[var(--color-text-muted)]">
+					{t('overview.scoreUnavailable')}
+				</span>
+			</div>
+		);
+	}
+
 	const overallScore = score.overallScore ?? 0;
 	const grade = score.grade ?? '';
 	const calculatedAt = score.calculatedAt ?? '';
