@@ -5,7 +5,7 @@
  *
  *   public/env.js                    ← window.__APP_CONFIG__（@autional/shared 运行时配置形状）
  *   public/robots.txt                ← SITE_URL + 区域注释
- *   public/sitemap.xml               ← SITE_URL × 12 条公开路由
+ *   public/sitemap.xml               ← SITE_URL × 公开路由（routes.mjs 单点）
  *   public/.well-known/security.txt  ← RFC 9116（区域 Preferred-Languages）
  *
  * 纪律：均为生成物（已 gitignore + git rm --cached）——勿手改、勿入库；幂等（同 env 输出一致）。
@@ -15,6 +15,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readBuildEnv } from './env.mjs';
 import { REGION_COPY } from './region-copy.mjs';
+import { PUBLIC_ROUTES } from './routes.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const buildEnv = readBuildEnv();
@@ -63,25 +64,11 @@ write(
   `# ${buildEnv.siteHost} — ${copy.robotsComment}\nUser-agent: *\nAllow: /\n\nSitemap: ${buildEnv.siteUrl}/sitemap.xml\n`,
 );
 
-// ── 3. sitemap.xml（12 条公开路由；confirm/unsubscribe 不入 sitemap）─────────
-const ROUTES = [
-  '/',
-  '/compliance',
-  '/security',
-  '/data-residency',
-  '/audit-reports',
-  '/incidents',
-  '/privacy',
-  '/privacy/device',
-  '/subprocessors',
-  '/vulnerability-disclosure',
-  '/storage-security',
-  '/security-alerts',
-];
+// ── 3. sitemap.xml（路由单点 = scripts/routes.mjs；confirm/unsubscribe 不入 sitemap）──
 write(
   'sitemap.xml',
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${ROUTES.map(
-    (p) => `  <url><loc>${buildEnv.siteUrl}${p}</loc></url>`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${PUBLIC_ROUTES.map(
+    (r) => `  <url><loc>${buildEnv.siteUrl}${r.path}</loc></url>`,
   ).join('\n')}\n</urlset>\n`,
 );
 

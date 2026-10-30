@@ -20,12 +20,23 @@ if (!rawOrigin) {
 
 const ORIGIN = rawOrigin.replace(/\/+$/, '');
 
-// SPA 兜底只在浏览器导航（Accept: text/html）时生效：缺的 /assets/*.js、/sitemap.xml 等
-// 返回真 404，不再被兜成 200 的 index.html（软 404 + 错缓存）。与 status 站同一写法。
+/**
+ * SPA 兜底（2026-10-30 修订，与 status 站同一写法，两处必读）。
+ *
+ * 1) 目的文件 `/index.html` → `/spa.html`：
+ *    构建期已按路由生成 dist/<route>/index.html（vite.config.ts staticRouteHtmlPlugin），
+ *    sitemap 里的公开路由由文件系统直接命中；本兜底只服务未知路径。
+ *    `spa.html` 不含 canonical / og:url —— 静态壳不知道真实路径，
+ *    「没有 canonical」远好过「错误 canonical（每页都指首页）」。
+ * 2) Accept 条件从 text/html 放宽到 text/html 或 *\/*，并排除资产/带扩展名路径：
+ *    旧条件让社交/IM/AI 抓取器（facebookexternalhit / Twitterbot / Slack / curl 默认
+ *    `Accept: *\/*`）请求深链一律 404 text/plain（线上实测 trust.cn/privacy）。
+ *    排除正则保证缺失的 /assets/*.js 仍是真 404，不会被兜成 200 的 HTML。
+ */
 const spaFallback: Rewrite = {
-  source: '/(.*)',
-  destination: '/index.html',
-  has: [{ type: 'header', key: 'accept', value: { re: 'text/html' } }],
+  source: '^/(?!assets/|.*\\.[a-zA-Z0-9]+$).*$',
+  destination: '/spa.html',
+  has: [{ type: 'header', key: 'accept', value: { re: 'text/html|\\*/\\*' } }],
 };
 
 export const config: VercelConfig = {
@@ -41,13 +52,21 @@ export const config: VercelConfig = {
   ],
 };
 
-// 守卫自证（2026-10-24）：末条 rewrites 必须是带 Accept 条件的 SPA 兜底。
-// 去掉条件 = 缺失的 /assets/*.js、/robots.txt 被兜成 200 的 index.html（软 404 + 错缓存），
-// 浏览器看不出来、爬虫看得出来。改这两行之前先读 spaFallback 上方注释。
+// 守卫自证（2026-10-30 修订）：末条 rewrites 必须是 SPA 兜底，且同时满足三条：
+//   ① source 为锚定正则并以负向前瞻排除 /assets/ 与带扩展名路径（缺失资产仍 404）；
+//   ② destination = /spa.html（不含 canonical 的壳）；
+//   ③ Accept 同时放行 text/html 与 */*（否则社交抓取器整片 404）。
+// 改这三条之前先读 spaFallback 上方注释（2026-10-30 线上实证：trust.cn/privacy 对
+// facebookexternalhit 返回 404 text/plain）。
 const lastRewrite = config.rewrites?.at(-1);
-const fallbackGuarded = lastRewrite?.has?.some(
-  (h) => h.key === 'accept' && JSON.stringify(h.value).includes('text/html'),
-);
-if (!fallbackGuarded) {
-  throw new Error('[trust] SPA 兜底缺少 Accept: text/html 守卫（见 vercel.ts spaFallback）');
+if (!lastRewrite || lastRewrite.destination !== '/spa.html') {
+  throw new Error('[trust] 末条 rewrite 必须是 SPA 兜底且指向 /spa.html（见 vercel.ts）');
+}
+const fallbackSource = String(lastRewrite.source ?? '');
+if (!fallbackSource.startsWith('^/') || !fallbackSource.includes('assets/')) {
+  throw new Error('[trust] SPA 兜底 source 必须排除 /assets/ 与带扩展名路径（见 vercel.ts）');
+}
+const acceptRule = JSON.stringify(lastRewrite.has ?? []);
+if (!acceptRule.includes('text/html') || !acceptRule.includes('*')) {
+  throw new Error('[trust] SPA 兜底必须同时放行 text/html 与 */*（见 vercel.ts）');
 }
