@@ -34,7 +34,13 @@ const ORIGIN = rawOrigin.replace(/\/+$/, '');
  *    排除正则保证缺失的 /assets/*.js 仍是真 404，不会被兜成 200 的 HTML。
  */
 const spaFallback: Rewrite = {
-  source: '^/(?!assets/|.*\\.[a-zA-Z0-9]+$).*$',
+  // 排除「任一段带点」的路径（/assets/*.js、/sitemap.xml、/favicon.ico…），其余交给 SPA 壳。
+  //
+  // ⚠ 不要用负向前瞻：`^/(?!assets/|.*\.[a-z0-9]+$).*$` 会被 @vercel/config 拒绝 ——
+  //   `Invalid path-to-regexp pattern: Negative lookaheads must be wrapped in a group`，
+  //   而「包一层」的写法在 path-to-regexp v6 里又匹配不到普通路径（实测全 skip）。
+  //   正确做法 = 用参数内联正则表达「非点段」：`(?:[^./]+/)*[^./]*`。
+  source: '/:path((?:[^./]+/)*[^./]*)',
   destination: '/spa.html',
   has: [{ type: 'header', key: 'accept', value: { re: 'text/html|\\*/\\*' } }],
 };
@@ -62,9 +68,8 @@ const lastRewrite = config.rewrites?.at(-1);
 if (!lastRewrite || lastRewrite.destination !== '/spa.html') {
   throw new Error('[trust] 末条 rewrite 必须是 SPA 兜底且指向 /spa.html（见 vercel.ts）');
 }
-const fallbackSource = String(lastRewrite.source ?? '');
-if (!fallbackSource.startsWith('^/') || !fallbackSource.includes('assets/')) {
-  throw new Error('[trust] SPA 兜底 source 必须排除 /assets/ 与带扩展名路径（见 vercel.ts）');
+if (!String(lastRewrite.source ?? '').includes('[^./]')) {
+  throw new Error('[trust] SPA 兜底 source 必须排除「带点的段」（负向前瞻会被平台拒绝，见注释）');
 }
 const acceptRule = JSON.stringify(lastRewrite.has ?? []);
 if (!acceptRule.includes('text/html') || !acceptRule.includes('*')) {
