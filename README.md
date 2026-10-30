@@ -40,3 +40,8 @@ pnpm test     # Vitest 单元测试
 - **hreflang**：`zh-CN` ↔ `.cn`、`en-US` ↔ `.com`、`x-default` → `.com`；`useTrustSEO` 在客户端导航时同步。
 - 本站**无 RSS**；`/security-alerts/confirm`、`/security-alerts/unsubscribe` 带令牌，不入 sitemap、不参与 hreflang 配对。
 - 详见 `docs/SEO-FEED-REGION-ISOLATION-2026-10-30.md`。
+
+> ⚠ **改 `vercel.ts` 的必读**：`rewrites[].source` 由 `@vercel/config` 按 path-to-regexp 解析，
+> **负向前瞻会被直接拒绝**（`Invalid path-to-regexp pattern`），表现为「部署失败、域名停留上一版」，
+> 本地构建看不出来。兜底规则因此写成 `/:path((?:[^./]+/)*[^./]*)`。
+> 改完先本地求值：`API_ORIGIN=https://api.autional.cn node --experimental-strip-types vercel.ts`。
