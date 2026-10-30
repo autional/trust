@@ -10,7 +10,8 @@
     "lint": "eslint src/",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "prebuild": "node ../../scripts/check-vercel-config.mjs"
   },
   "dependencies": {
     "@autional/shared": "0.1.0-rc.33",

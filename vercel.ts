@@ -50,6 +50,10 @@ export const config: VercelConfig = {
   installCommand: 'pnpm install --frozen-lockfile',
   buildCommand: 'pnpm --filter @autional/trust-center... build',
   outputDirectory: 'apps/trust-center/dist',
+  headers: [
+    // 兜底壳（/spa.html）可被直接访问：不带 canonical，标 noindex 免得被当成独立页收录。
+    routes.header('/spa.html', [{ key: 'X-Robots-Tag', value: 'noindex' }]),
+  ],
   rewrites: [
     routes.rewrite('/bff/:path*', `${ORIGIN}/bff/:path*`),
     routes.rewrite('/api/v1/:path*', `${ORIGIN}/api/v1/:path*`),
