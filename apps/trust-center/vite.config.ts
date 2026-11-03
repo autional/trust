@@ -3,14 +3,13 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
-import { CDN_PIN, readBuildEnv } from '../../scripts/env.mjs';
+import { readBuildEnv } from '../../scripts/env.mjs';
 import { REGION_COPY } from '../../scripts/region-copy.mjs';
 import { PUBLIC_ROUTES } from '../../scripts/routes.mjs';
 import { applyRouteHead, siblingSiteUrl, stripRouteIdentity } from '../../scripts/route-html.mjs';
 
 const buildEnv = readBuildEnv();
 const copy = REGION_COPY[buildEnv.defaultLang];
-const CDN_ASSET_BASE = `${buildEnv.cdnHost}/ui/${CDN_PIN}`;
 const ROOT_URL = `https://www.${buildEnv.rootDomain}`;
 
 function normalizeViteBase(p: string | undefined): string {
@@ -90,7 +89,6 @@ function regionPlugin(): Plugin {
     OG_IMAGE: `${ROOT_URL}/og-default.png`,
     SITE_URL: buildEnv.siteUrl,
     ROOT_URL,
-    CDN_ASSET_BASE,
   };
   return {
     name: 'region-plugin',
