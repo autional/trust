@@ -23,8 +23,8 @@
 |---|---|---|---|---|
 | F1 | `GET …/compliance/public/subprocessors?page_size=9999`（及 `101`、`-1`、`page=-1`）返回 **HTTP 500** | 400/422（客户端输入错误） | 响应体 `title: "…failed on the 'max' tag"`，`service: compliance-service` | 后端 compliance（binding 错误被映射成内部错误） |
 | F3 | `page_size=0`、`page=0` 返回 **200** 并正常出数据 | 400/422 | 源码 `service-core/base/dto/validation_builder.go:126` 明确 `page>=1`、`page_size∈[1,100]` | 后端（**线上行为与源码不一致 → 疑似部署漂移**） |
-| F4 | 静态页响应只有 HSTS，缺 **CSP / X-Frame-Options / X-Content-Type-Options** | 三件套齐全（API 侧已有） | `curl -I https://trust.autional.cn/compliance` | 平台配置（Vercel headers） |
-| F5 | 未知路径返回 **200 且无 `X-Robots-Tag`**，软 404 可被收录 | 软 404 标 `noindex` | `vercel.ts` 的 `headers` 只匹配 `/spa.html`，rewrite 后不生效 | 平台配置（Vercel headers + rewrite 组合） |
+| F4 | 静态页响应只有 HSTS，缺 **CSP / X-Frame-Options / X-Content-Type-Options** | 三件套齐全（API 侧已有） | `curl -I https://trust.autional.cn/compliance` | 平台配置（Vercel headers） | **已修，待部署** |
+| F5 | 未知路径返回 **200 且无 `X-Robots-Tag`**，软 404 可被收录 | 软 404 标 `noindex` | `vercel.ts` 的 `headers` 只匹配 `/spa.html`，rewrite 后不生效 | 平台配置（Vercel headers + rewrite 组合） | **已修，待部署** |
 | F6 | 公开端点 `GET /storage/api/v1/storage/public/reports` 返回 **6 条测试上传物**（`a.png` / `avatar.png` / `banner.png`，73 B） | 公开面只应有正式文档 | 实际响应 `items[]` | 数据/后端（公开面上残留测试数据；若将来含真实文件即越权暴露） |
 
 ### P3（可随迭代修）
@@ -83,7 +83,9 @@ curl "https://api.autional.tianv.mobi/bff/storage/api/v1/storage/public/reports"
 4. F10 去重（去掉网关或服务其中一层的头）。
 5. F11 补 `noindex: true`；F12 改 `type="text"` 或加 `noValidate` 以走内联校验。
 
-## 七、已实施修复（代码已改，待部署验证）
+## 七、已实施修复
+
+### 第一波：F11 / F12（已上线，线上真断言验证通过）
 
 | 文件 | 改动 | 覆盖缺陷 |
 |---|---|---|
@@ -92,19 +94,34 @@ curl "https://api.autional.tianv.mobi/bff/storage/api/v1/storage/public/reports"
 | `apps/trust-center/src/lib/seo.ts` | `noindex` 分支不仅跳过配对，还**清掉**残留的 `link[rel=alternate][hreflang]`（原实现只"不加"不"删"，客户端跳转进来会残留） | F11 |
 | `apps/trust-center/src/app/security-alerts/page.tsx` | `<form noValidate>`：关掉浏览器原生气泡，统一走 zod 内联中文文案 | F12 |
 
-验证（本地预览，**真断言**，不靠预期失败）：
+验证（本地预览 + 线上，均为**真断言**，不靠预期失败）：
 
 ```bash
-API_ORIGIN=https://api.autional.tianv.mobi pnpm build
-cd apps/trust-center && API_ORIGIN=https://api.autional.tianv.mobi pnpm preview
-# 另一个终端：
-QA_VERIFY_FIXES=1 QA_SITE_CN=http://localhost:13109 \
-  pnpm --filter @autional/trust-qa exec playwright test --project=e2e \
-  -g "令牌入口|sitemap|robots|非法邮箱|格式不合法"
-# → 9 passed
+QA_VERIFY_FIXES=1 QA_SITE_CN=http://localhost:13109 pnpm qa:e2e -g "令牌入口|sitemap|robots|非法邮箱|格式不合法"   # 本地 9 passed
+QA_VERIFY_FIXES=1 pnpm qa:e2e -g "令牌入口 /security-alerts|显示内联中文报错"                                        # 线上 3 passed
 ```
 
-回归：站点单测 `pnpm --filter @autional/trust-center test` → **24 passed**。
+回归：站点单测 24 passed；线上全量 73 passed / 4 skipped。
+`routes.spec.ts` 与 `subscribe.spec.ts` 里的 `knownFail()` 已删除 → 两条缺陷正式**转正**。
 
-部署后在**线上**跑 `QA_VERIFY_FIXES=1 pnpm qa:e2e -g "令牌入口"`，通过即把 `routes.spec.ts`
-里的 `knownFail(KNOWN.F11)` 删掉，完成转正。
+### 第二波：F4 / F5（已改，待部署验证）
+
+| 文件 | 改动 |
+|---|---|
+| `vercel.ts` | 新增 `routes.header('/(.*)')`：`X-Content-Type-Options` / `X-Frame-Options` / `Referrer-Policy` / `Permissions-Policy` / `Content-Security-Policy`（CSP 的 `connect-src` 由本区 `API_ORIGIN` 生成；按构建产物核对过：字体自托管、无外部 CDN、无 blob/worker） |
+| `vercel.ts` | **删掉通配 SPA 兜底**，改为仅 `confirm` / `unsubscribe` 两条显式 rewrite；其余未知路径交给平台 404 |
+| `apps/trust-center/vite.config.ts` | 构建期额外产出 `dist/404.html`（SPA 壳 + `noindex` + 标题「页面不存在」），由平台以 **404 状态码**返回 |
+| `vercel.ts` 守卫 | ① 令牌入口必须各自有 `/spa.html` rewrite；② **禁止**任何通配兜底 rewrite（防软 404 回归）；③ CSP 必须含本区 API 源站 |
+
+为什么这样修 F5：`headers` 按**请求路径**匹配，无法只给"兜底命中"的响应加 `X-Robots-Tag`；
+而通配 rewrite 让未知路径返回 200，本身就是软 404 的根因。改成真 404 状态码后，
+抓取器（含不跑 JS 的社交/AI 抓取器）拿到的是标准 404 语义。
+
+部署后验收：
+
+```bash
+curl -sI https://trust.autional.cn/compliance | grep -iE "content-security|x-frame|x-content-type"
+curl -sI "https://trust.autional.cn/qa-nonexistent" | head -1     # 期望 HTTP/2 404
+curl -sI "https://trust.autional.cn/security-alerts/confirm" | head -1  # 期望 200（仍可深链）
+pnpm qa:all
+```

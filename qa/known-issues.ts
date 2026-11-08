@@ -15,8 +15,8 @@ export const KNOWN = {
   F5: 'F5 软 404：未知路径返回 200 且无 X-Robots-Tag（/spa.html 的 noindex 头不随 rewrite 生效）',
   F6: 'F6 公开端点暴露测试上传物：GET /storage/api/v1/storage/public/reports 含 a.png/avatar.png(73B)',
   F10: 'F10 API 响应头重复：Content-Security-Policy / X-Content-Type-Options 各出现两次',
-  F11: 'F11 令牌入口未标 noindex：/security-alerts/confirm 与 /unsubscribe 的 useTrustSEO 未传 noindex（routes.mjs 注释要求"不得被索引"）',
-  F12: 'F12 订阅表单非法邮箱只弹浏览器原生气泡，无内联中文文案（type=email 先于 RHF 拦截）',
+  F11: 'F11 令牌入口未标 noindex（2026-11-08 已修复并线上验证 → 转正，见 FINDINGS §七）',
+  F12: 'F12 订阅表单非法邮箱只弹浏览器原生气泡（2026-11-08 已修复并线上验证 → 转正）',
 } as const;
 
 /**

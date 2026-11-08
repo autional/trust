@@ -1,7 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
 import { CN } from '../fixtures/env';
-import { KNOWN } from '../known-issues';
-import { knownFail } from '../fixtures/known';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -99,7 +97,6 @@ for (const route of PUBLIC_ROUTES) {
 
 for (const route of TOKEN_ROUTES) {
 	test(`令牌入口 ${route.path} 渲染且 noindex`, async ({ page }) => {
-		knownFail(KNOWN.F11);
 		const { consoleErrors } = collect(page);
 		const res = await page.goto(route.path, { waitUntil: 'domcontentloaded' });
 		expect(res?.status()).toBe(200);

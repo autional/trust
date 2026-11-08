@@ -1,7 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { WRITE_PATH, CN } from '../fixtures/env';
-import { KNOWN } from '../known-issues';
-import { knownFail } from '../fixtures/known';
 
 /**
  * 系统测试 · 写链路（安全告警订阅 / 确认 / 退订）。
@@ -45,7 +43,6 @@ test.describe('订阅表单（负向，无副作用）', () => {
 	});
 
 	test('非法邮箱（not-an-email）：显示内联中文报错', async ({ page }) => {
-		knownFail(KNOWN.F12);
 		await page.goto('/security-alerts', { waitUntil: 'domcontentloaded' });
 		await page.locator('#email').fill('not-an-email');
 		await page.getByLabel('数据泄露通知').check();
