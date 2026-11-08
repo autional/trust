@@ -57,7 +57,14 @@ export function useTrustSEO({ title, description, noindex }: TrustSEOOptions) {
 
 	useEffect(() => {
 		// 带令牌入口（confirm / unsubscribe）都标了 noindex，不参与 hreflang 配对。
-		if (noindex) return;
+		// 注意：不只是"不加"，还要**清掉**上一页/静态壳可能残留的 hreflang——
+		// 从已配对页面客户端跳转进来时，head 里的旧 link 会留下来（QA 实测）。
+		if (noindex) {
+			document.head
+				.querySelectorAll('link[rel="alternate"][hreflang]')
+				.forEach((el) => el.remove());
+			return;
+		}
 		applyHreflang(pathname);
 	}, [pathname, noindex]);
 

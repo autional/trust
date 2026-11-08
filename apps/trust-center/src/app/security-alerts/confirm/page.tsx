@@ -19,6 +19,9 @@ export default function SecurityAlertsConfirmPage() {
 	useTrustSEO({
 		title: t('securityAlerts.confirm.title'),
 		description: t('securityAlerts.confirm.meta'),
+		// 令牌入口不得被索引（scripts/routes.mjs 已将其排除出 sitemap；
+		// 这里补 noindex 兜底：抓取器即便经外部链接发现也不收录）。
+		noindex: true,
 	});
 
 	const [searchParams] = useSearchParams();

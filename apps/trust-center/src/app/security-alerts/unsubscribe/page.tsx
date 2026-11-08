@@ -19,6 +19,8 @@ export default function SecurityAlertsUnsubscribePage() {
 	useTrustSEO({
 		title: t('securityAlerts.unsubscribe.title'),
 		description: t('securityAlerts.unsubscribe.meta'),
+		// 令牌入口不得被索引（同 confirm 页）。
+		noindex: true,
 	});
 
 	const [searchParams] = useSearchParams();

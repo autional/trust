@@ -114,6 +114,10 @@ export default function SecurityAlertsPage() {
 				) : (
 					<form
 						onSubmit={handleSubmit(onSubmit)}
+						// noValidate：关掉浏览器原生校验气泡，统一走 zod + 内联中文文案。
+						// 否则 type=email 的原生拦截会先于 RHF 提交，用户看不到本页的错误提示，
+						// 且各浏览器文案不可控（QA 实测 J-12）。
+						noValidate
 						className="mt-10 rounded-md border border-neutral-200 bg-white p-6 shadow-card dark:border-neutral-800 dark:bg-surface sm:p-8"
 					>
 						<div className="space-y-5">
