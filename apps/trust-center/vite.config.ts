@@ -67,7 +67,23 @@ function staticRouteHtmlPlugin(): Plugin {
       }
 
       writeFileSync(path.join(outDir, 'spa.html'), stripRouteIdentity(home));
-      console.log(`[trust] static route html: ${generated} pages (+ spa.html)`);
+
+      /**
+       * 404.html —— 未匹配路径的**真 404** 响应体（2026-11-08，缺陷 F5）。
+       *
+       * 原策略用 `/(.*)` 兜底 rewrite 到 spa.html：任何乱路径都返回 **200**，
+       * 且 headers 规则按请求路径匹配、无法给"只有兜底才命中"的响应打 noindex ⇒
+       * 软 404 可被收录（QA 线上实测）。改为：
+       *   - 只有令牌入口（confirm / unsubscribe）显式 rewrite 到 spa.html（深链必须能进 SPA）；
+       *   - 其余未知路径由平台返回本文件 + 404 状态码（状态码本身就是最强 noindex 信号）。
+       * 仍保留 SPA 壳（能启动路由、渲染 NotFoundPage），只是状态码变成 404。
+       */
+      const notFound = stripRouteIdentity(home)
+        .replace(/<title>[^<]*<\/title>/, '<title>页面不存在 · Autional Trust Center</title>')
+        .replace('</head>', '    <meta name="robots" content="noindex" />\n  </head>');
+      writeFileSync(path.join(outDir, '404.html'), notFound);
+
+      console.log(`[trust] static route html: ${generated} pages (+ spa.html + 404.html)`);
     },
   };
 }

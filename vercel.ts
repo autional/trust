@@ -21,61 +21,93 @@ if (!rawOrigin) {
 const ORIGIN = rawOrigin.replace(/\/+$/, '');
 
 /**
- * SPA 兜底（2026-10-30 修订，与 status 站同一写法，两处必读）。
+ * 令牌入口兜底（2026-11-08，缺陷 F5 改造）。
  *
- * 1) 目的文件 `/index.html` → `/spa.html`：
- *    构建期已按路由生成 dist/<route>/index.html（vite.config.ts staticRouteHtmlPlugin），
- *    sitemap 里的公开路由由文件系统直接命中；本兜底只服务未知路径。
- *    `spa.html` 不含 canonical / og:url —— 静态壳不知道真实路径，
- *    「没有 canonical」远好过「错误 canonical（每页都指首页）」。
- * 2) Accept 条件从 text/html 放宽到 text/html 或 *\/*，并排除资产/带扩展名路径：
- *    旧条件让社交/IM/AI 抓取器（facebookexternalhit / Twitterbot / Slack / curl 默认
- *    `Accept: *\/*`）请求深链一律 404 text/plain（线上实测 trust.cn/privacy）。
- *    排除正则保证缺失的 /assets/*.js 仍是真 404，不会被兜成 200 的 HTML。
+ * 只有这两个路径需要「直接深链进 SPA」（确认/退订链接来自邮件）。
+ * 其余未知路径**不再**兜底到 200 的壳——交给平台的 404.html（真 404 状态码）。
+ * 旧写法 `/(.*)` 兜底会让任意乱路径返回 200，且 headers 按请求路径匹配、
+ * 无法只给兜底响应打 noindex ⇒ 软 404 可被收录（线上实测）。
  */
-const spaFallback: Rewrite = {
-  // 排除「任一段带点」的路径（/assets/*.js、/sitemap.xml、/favicon.ico…），其余交给 SPA 壳。
-  //
-  // ⚠ 不要用负向前瞻：`^/(?!assets/|.*\.[a-z0-9]+$).*$` 会被 @vercel/config 拒绝 ——
-  //   `Invalid path-to-regexp pattern: Negative lookaheads must be wrapped in a group`，
-  //   而「包一层」的写法在 path-to-regexp v6 里又匹配不到普通路径（实测全 skip）。
-  //   正确做法 = 用参数内联正则表达「非点段」：`(?:[^./]+/)*[^./]*`。
-  source: '/:path((?:[^./]+/)*[^./]*)',
-  destination: '/spa.html',
-  has: [{ type: 'header', key: 'accept', value: { re: 'text/html|\\*/\\*' } }],
-};
+const TOKEN_ROUTE_PATHS = ['/security-alerts/confirm', '/security-alerts/unsubscribe'];
+
+const tokenRewrites: Rewrite[] = TOKEN_ROUTE_PATHS.map((path) => ({
+	source: path,
+	destination: '/spa.html',
+	has: [{ type: 'header', key: 'accept', value: { re: 'text/html|\\*/\\*' } }],
+}));
+
+/**
+ * 静态页安全响应头（缺陷 F4）。
+ *
+ * 之前只有 HSTS 是平台默认给的；CSP / XFO / nosniff 全缺（API 侧反而齐全）。
+ * 取值按当前构建产物核对过：字体自托管（/assets/*.woff2）、无外部 CDN 资源、
+ * JSON-LD 为数据块不被 script-src 拦截 ⇒ 不需要放宽。
+ * connect-src 必须含本区 API 源站（cn 前端直连，com 走同域 /bff）。
+ */
+const SECURITY_HEADERS = [
+	{ key: 'X-Content-Type-Options', value: 'nosniff' },
+	{ key: 'X-Frame-Options', value: 'DENY' },
+	{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+	{ key: 'Permissions-Policy', value: 'geolocation=(), microphone=(), camera=()' },
+	{
+		key: 'Content-Security-Policy',
+		value: [
+			"default-src 'self'",
+			"script-src 'self' 'unsafe-inline'",
+			"style-src 'self' 'unsafe-inline'",
+			"img-src 'self' data:",
+			"font-src 'self' data:",
+			`connect-src 'self' ${ORIGIN}`,
+			"object-src 'none'",
+			"base-uri 'self'",
+			"form-action 'self'",
+			"frame-ancestors 'none'",
+		].join('; '),
+	},
+];
 
 export const config: VercelConfig = {
-  framework: 'vite',
-  installCommand: 'pnpm install --frozen-lockfile',
-  buildCommand: 'pnpm --filter @autional/trust-center... build',
-  outputDirectory: 'apps/trust-center/dist',
-  headers: [
-    // 兜底壳（/spa.html）可被直接访问：不带 canonical，标 noindex 免得被当成独立页收录。
-    routes.header('/spa.html', [{ key: 'X-Robots-Tag', value: 'noindex' }]),
-  ],
-  rewrites: [
-    routes.rewrite('/bff/:path*', `${ORIGIN}/bff/:path*`),
-    routes.rewrite('/api/v1/:path*', `${ORIGIN}/api/v1/:path*`),
-    routes.rewrite('/oauth/:path*', `${ORIGIN}/oauth/:path*`),
-    spaFallback,
-  ],
+	framework: 'vite',
+	installCommand: 'pnpm install --frozen-lockfile',
+	buildCommand: 'pnpm --filter @autional/trust-center... build',
+	outputDirectory: 'apps/trust-center/dist',
+	headers: [
+		// 兜底壳（/spa.html）可被直接访问：不带 canonical，标 noindex 免得被当成独立页收录。
+		routes.header('/spa.html', [{ key: 'X-Robots-Tag', value: 'noindex' }]),
+		routes.header('/(.*)', SECURITY_HEADERS),
+	],
+	rewrites: [
+		routes.rewrite('/bff/:path*', `${ORIGIN}/bff/:path*`),
+		routes.rewrite('/api/v1/:path*', `${ORIGIN}/api/v1/:path*`),
+		routes.rewrite('/oauth/:path*', `${ORIGIN}/oauth/:path*`),
+		...tokenRewrites,
+	],
 };
 
-// 守卫自证（2026-10-30 修订）：末条 rewrites 必须是 SPA 兜底，且同时满足三条：
-//   ① source 为锚定正则并以负向前瞻排除 /assets/ 与带扩展名路径（缺失资产仍 404）；
-//   ② destination = /spa.html（不含 canonical 的壳）；
-//   ③ Accept 同时放行 text/html 与 */*（否则社交抓取器整片 404）。
-// 改这三条之前先读 spaFallback 上方注释（2026-10-30 线上实证：trust.cn/privacy 对
-// facebookexternalhit 返回 404 text/plain）。
-const lastRewrite = config.rewrites?.at(-1);
-if (!lastRewrite || lastRewrite.destination !== '/spa.html') {
-  throw new Error('[trust] 末条 rewrite 必须是 SPA 兜底且指向 /spa.html（见 vercel.ts）');
+// 守卫自证（2026-11-08 改造后）：
+//   ① 每个令牌入口都必须有到 /spa.html 的 rewrite（否则邮件深链进不了 SPA）；
+//   ② **不得**存在通配兜底 rewrite（`/(.*)` / `/:path*` 之类）——
+//      它会把未知路径兜成 200，软 404 与"可被收录"会同时回来。
+const tokenCovered = TOKEN_ROUTE_PATHS.filter((path) =>
+	(config.rewrites ?? []).some(
+		(r) => r.source === path && (r as Rewrite).destination === '/spa.html',
+	),
+);
+if (tokenCovered.length !== TOKEN_ROUTE_PATHS.length) {
+	throw new Error(
+		`[trust] 令牌入口缺少 SPA rewrite：${TOKEN_ROUTE_PATHS.filter((p) => !tokenCovered.includes(p)).join(', ')}`,
+	);
 }
-if (!String(lastRewrite.source ?? '').includes('[^./]')) {
-  throw new Error('[trust] SPA 兜底 source 必须排除「带点的段」（负向前瞻会被平台拒绝，见注释）');
+
+const CATCH_ALL = /^\/?(\(\.\*\)|:path\*|:path\(\.\*\))$/;
+const catchAll = (config.rewrites ?? []).filter((r) => CATCH_ALL.test(String(r.source ?? '')));
+if (catchAll.length > 0) {
+	throw new Error(
+		`[trust] 禁止通配兜底 rewrite（会重新引入软 404）：${catchAll.map((r) => r.source).join(', ')}`,
+	);
 }
-const acceptRule = JSON.stringify(lastRewrite.has ?? []);
-if (!acceptRule.includes('text/html') || !acceptRule.includes('*')) {
-  throw new Error('[trust] SPA 兜底必须同时放行 text/html 与 */*（见 vercel.ts）');
+
+const csp = SECURITY_HEADERS.find((h) => h.key === 'Content-Security-Policy')?.value ?? '';
+if (!csp.includes(ORIGIN)) {
+	throw new Error('[trust] CSP connect-src 必须包含本区 API 源站 API_ORIGIN');
 }
