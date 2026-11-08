@@ -9,7 +9,10 @@
     "preview": "pnpm --filter @autional/trust-center preview",
     "typecheck": "pnpm --filter @autional/trust-center typecheck",
     "lint": "pnpm --filter @autional/trust-center lint",
-    "test": "pnpm --filter @autional/trust-center test"
+    "test": "pnpm --filter @autional/trust-center test",
+    "qa:api": "pnpm --filter @autional/trust-qa qa:api",
+    "qa:e2e": "pnpm --filter @autional/trust-qa qa:e2e",
+    "qa:all": "pnpm --filter @autional/trust-qa qa:all"
   },
   "packageManager": "pnpm@11.0.8",
   "engines": {
