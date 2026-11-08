@@ -1,0 +1,19 @@
+{
+  "name": "@autional/trust-qa",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Trust Center 接口测试 + 系统测试（Playwright）。独立包：不参与 Vercel 构建。",
+  "scripts": {
+    "qa:api": "playwright test --project=api",
+    "qa:e2e": "playwright test --project=e2e",
+    "qa:all": "playwright test",
+    "qa:report": "playwright show-report .artifacts/report",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "@types/node": "^24.10.0",
+    "zod": "3.23.8"
+  }
+}
