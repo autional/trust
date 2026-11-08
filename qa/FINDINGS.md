@@ -104,7 +104,13 @@ QA_VERIFY_FIXES=1 pnpm qa:e2e -g "令牌入口 /security-alerts|显示内联中�
 回归：站点单测 24 passed；线上全量 73 passed / 4 skipped。
 `routes.spec.ts` 与 `subscribe.spec.ts` 里的 `knownFail()` 已删除 → 两条缺陷正式**转正**。
 
-### 第二波：F4 / F5（已改，待部署验证）
+### 第二波：F4 / F5（代码已合入 main，**部署被 Vercel 限流阻塞**）
+
+> 2026-11-08 22:5x 推送后两个 Vercel 项目均返回
+> `Deployment rate limited — retry in 24 hours.`（`Vercel – cn-trust` / `Vercel – trust`，经 `gh api …/status` 核实）。
+> 同仓库历史上限流窗口一般为 24h。**线上仍是第一波的产物**，F4/F5 两个用例继续按"预期失败"计。
+> 限流窗口结束后：随便推一个空提交（或 Vercel 面板 Redeploy）→ 跑下面验收 → 删掉
+> `seo-security.spec.ts` 里的 `knownFail(KNOWN.F4/F5)` 完成转正。
 
 | 文件 | 改动 |
 |---|---|
