@@ -199,10 +199,8 @@ export default function SecurityAlertsPage() {
 															}}
 															className="mt-0.5 h-4 w-4 rounded-xs border-[var(--color-border-strong)] text-primary-600 focus:ring-primary-500"
 														/>
-														<div>
-															<span className="text-sm font-medium text-[var(--color-text-primary)]">
-																{topic.label}
-															</span>
+														<div className="text-sm font-medium text-[var(--color-text-primary)]">
+															{topic.label}
 															<p className="mt-0.5 text-xs text-[var(--color-text-muted)]">
 																{topic.desc}
 															</p>
