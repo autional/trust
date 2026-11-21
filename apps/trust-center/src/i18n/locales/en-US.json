@@ -139,6 +139,15 @@
         "Business data stored in mainland China",
         "Cross-border links use authorised mechanisms"
       ]
+    },
+    {
+      "code": "KR",
+      "name": "South Korea (Seoul)",
+      "location": "Tencent Cloud Lighthouse (self-hosted mail)",
+      "features": [
+        "Support/privacy mail",
+        "Cross-border transfer"
+      ]
     }
   ],
   "dataResidency.checklistItems": [
@@ -230,7 +239,7 @@
   "privacy.dpoAddress": "Location:",
   "privacy.dpoAddressText": "Autional (individual operator), Shenzhen, Guangdong, China (further operator details available to regulators on request)",
   "privacy.lastUpdated": "Last Updated",
-  "privacy.updatedDate": "November 21, 2026",
+  "privacy.updatedDate": "November 22, 2026",
   "privacy.sections.collection": [
     "Account information: username, email, phone number, password hash (irreversibly encrypted storage).",
     "Usage data: login time, IP address, device fingerprint, operation logs (for security auditing and anomaly detection).",
@@ -250,11 +259,13 @@
   "privacy.sections.crossBorder": [
     "By default, data is stored in the geographic region of your choice (see Data Residency page).",
     "When cross-border data transfer is required, we use EU Commission-approved Standard Contractual Clauses (SCC) or other legal mechanisms.",
+    "Support/privacy mailboxes (privacy@ / support@ / legal@ / security@) are handled by our self-hosted mail system hosted in Seoul, South Korea; message content involves cross-border transfer and is handled under applicable lawful mechanisms.",
     "You can always learn about your data storage location and cross-border transfer status."
   ],
   "privacy.sections.retention": [
-    "Account data is retained until you delete your account or 90 days after contract termination, unless a longer period is required by law.",
-    "Audit logs are retained as required by applicable regulations.",
+    "Account data is retained for the lifetime of the account; after account deletion, it is deleted within 30 days, with backups expiring within 30 days (not available for user recovery).",
+    "Audit logs are retained as required by applicable regulations (180 days online + 7 years archived).",
+    "Support/privacy emails are retained for 2 years.",
     "You may request deletion of your personal data at any time (GDPR right to erasure / China Personal Information Protection Law)."
   ],
   "privacy.sections.rights": [
