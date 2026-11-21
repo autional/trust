@@ -123,8 +123,8 @@
   "dataResidency.commitments": "数据驻留承诺",
   "dataResidency.transparency": "数据存储位置透明",
   "dataResidency.transparencyDesc": "我们公开数据的存储区域，并在区域变更前通知客户。",
-  "dataResidency.noCrossBorder": "默认数据不出境",
-  "dataResidency.noCrossBorderDesc": "对于中国大陆租户，数据存储于境内数据中心，未经明确授权不跨境传输。",
+  "dataResidency.noCrossBorder": "数据存储于中国大陆",
+  "dataResidency.noCrossBorderDesc": "对于中国大陆租户，业务数据存储于境内数据中心；公开入口经香港节点与 Vercel 边缘转发，涉及跨境传输，我们采用标准合同条款或单独同意等机制。",
   "dataResidency.crossBorderCompliance": "跨境传输合规",
   "dataResidency.crossBorderComplianceDesc": "如确需跨境传输，我们将事先取得您的明确授权，并采用适用法律认可的合法机制。",
   "dataResidency.retention": "数据保留与删除",
@@ -136,8 +136,8 @@
       "name": "中国大陆",
       "location": "境内云基础设施",
       "features": [
-        "数据不出境",
-        "本地化支持"
+        "业务数据存储于中国大陆",
+        "跨境链路采用授权机制"
       ]
     }
   ],
@@ -223,19 +223,18 @@
   "privacy.crossBorder": "跨境数据传输",
   "privacy.retention": "数据保留与删除",
   "privacy.rights": "您的权利",
-  "privacy.cookies": "Cookie 与追踪技术",
-  "privacy.contactDpo": "联系我们的数据保护官 (DPO)",
-  "privacy.contactDpoDesc": "如果您对隐私政策有任何疑问，或希望行使您的数据主体权利，请通过以下方式联系我们的数据保护官：",
+  "privacy.cookies": "Cookie 与存储",
+  "privacy.contactDpo": "联系我们",
+  "privacy.contactDpoDesc": "如果您对隐私政策有任何疑问，或希望行使您的数据主体权利，请通过以下方式联系我们：",
   "privacy.dpoEmail": "邮箱：",
-  "privacy.dpoAddress": "地址：",
-  "privacy.dpoAddressText": "Autional Data Protection Office, 深圳市",
+  "privacy.dpoAddress": "所在地：",
+  "privacy.dpoAddressText": "Autional（个人运营），中国广东省深圳市（监管机构可请求进一步主体信息）",
   "privacy.lastUpdated": "最后更新日期",
-  "privacy.updatedDate": "2026 年 10 月 5 日",
+  "privacy.updatedDate": "2026 年 11 月 21 日",
   "privacy.sections.collection": [
     "账户信息：用户名、邮箱、手机号、密码哈希（不可逆加密存储）。",
     "使用数据：登录时间、IP 地址、设备指纹、操作日志（用于安全审计与异常检测）。",
-    "租户配置：企业名称、部门结构、应用配置、品牌定制信息。",
-    "支付信息：账单地址、交易记录（支付卡号由第三方支付网关处理，Autional 不存储完整卡号）。"
+    "租户配置：企业名称、部门结构、应用配置、品牌定制信息。"
   ],
   "privacy.sections.usage": [
     "提供身份认证与访问管理服务。",
@@ -267,9 +266,12 @@
     "撤回同意权：随时撤回先前给予的同意。"
   ],
   "privacy.sections.cookies": [
-    "我们使用必要的 Cookie 来维持服务运行（如会话保持、安全令牌）。",
-    "分析型 Cookie 仅用于改进产品体验，不会用于跨站追踪。",
-    "您可通过浏览器设置管理 Cookie 偏好，但禁用必要 Cookie 可能影响服务使用。"
+    "Autional 只使用严格必要的安全 Cookie，用于保障登录与账号安全；不使用分析、广告或营销 Cookie。",
+    "__Host-did：可信设备标识（HttpOnly、Secure、SameSite=Lax，最长 400 天）。用于记住可信设备、避免重复 MFA；不用于广告或跨站追踪。",
+    "oauth_bind_state：第三方账号绑定的防 CSRF 状态（HttpOnly、SameSite=Lax，最长 10 分钟）。绑定完成后立即清除。",
+    "如启用 SAML 单点登录，另使用 SAML 会话 Cookie；该 Cookie 只在 SAML 流程内使用。",
+    "语言、主题等偏好保存在浏览器 localStorage，不写入 Cookie。",
+    "上述 Cookie 属于严格必要类别，无需征得同意；您可以通过浏览器设置删除它们，但可能影响登录或可信设备功能。"
   ],
   "privacy.device.title": "设备数据隐私",
   "privacy.device.subtitle": "了解 Autional 身份验证器在您的设备上处理哪些数据，以及我们如何保护这些数据。",

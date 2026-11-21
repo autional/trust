@@ -123,8 +123,8 @@
   "dataResidency.commitments": "Data Residency Commitments",
   "dataResidency.transparency": "Transparent Data Storage Locations",
   "dataResidency.transparencyDesc": "We disclose the region where data is stored, and notify customers before any region change.",
-  "dataResidency.noCrossBorder": "Default No Cross-Border Transfer",
-  "dataResidency.noCrossBorderDesc": "For tenants in mainland China, data is stored in domestic data centres and is not transferred across borders without explicit authorisation.",
+  "dataResidency.noCrossBorder": "Data Stored in Mainland China",
+  "dataResidency.noCrossBorderDesc": "For tenants in mainland China, business data is stored in domestic data centres. Public entry points are forwarded through our Hong Kong node and Vercel edge, which involves cross-border transfer; we rely on Standard Contractual Clauses or separate consent.",
   "dataResidency.crossBorderCompliance": "Compliant Cross-Border Transfers",
   "dataResidency.crossBorderComplianceDesc": "If a cross-border transfer is ever required, we will obtain your explicit authorisation in advance and rely on a lawful mechanism recognised by applicable law.",
   "dataResidency.retention": "Data Retention & Deletion",
@@ -136,8 +136,8 @@
       "name": "Mainland China",
       "location": "Domestic cloud infrastructure",
       "features": [
-        "Data stays in-country",
-        "Localised support"
+        "Business data stored in mainland China",
+        "Cross-border links use authorised mechanisms"
       ]
     }
   ],
@@ -223,19 +223,18 @@
   "privacy.crossBorder": "Cross-Border Data Transfers",
   "privacy.retention": "Data Retention & Deletion",
   "privacy.rights": "Your Rights",
-  "privacy.cookies": "Cookies & Tracking Technologies",
-  "privacy.contactDpo": "Contact Our Data Protection Officer (DPO)",
-  "privacy.contactDpoDesc": "If you have any questions about our privacy policy or wish to exercise your data subject rights, please contact our DPO:",
+  "privacy.cookies": "Cookies & Storage",
+  "privacy.contactDpo": "Contact Us",
+  "privacy.contactDpoDesc": "If you have any questions about our privacy policy or wish to exercise your data subject rights, please contact us:",
   "privacy.dpoEmail": "Email:",
-  "privacy.dpoAddress": "Address:",
-  "privacy.dpoAddressText": "Autional Data Protection Office, Shenzhen, China",
+  "privacy.dpoAddress": "Location:",
+  "privacy.dpoAddressText": "Autional (individual operator), Shenzhen, Guangdong, China (further operator details available to regulators on request)",
   "privacy.lastUpdated": "Last Updated",
-  "privacy.updatedDate": "October 5, 2026",
+  "privacy.updatedDate": "November 21, 2026",
   "privacy.sections.collection": [
     "Account information: username, email, phone number, password hash (irreversibly encrypted storage).",
     "Usage data: login time, IP address, device fingerprint, operation logs (for security auditing and anomaly detection).",
-    "Tenant configuration: company name, department structure, application configuration, branding customization information.",
-    "Payment information: billing address, transaction records (card numbers are processed by third-party payment gateways; Autional does not store full card numbers)."
+    "Tenant configuration: company name, department structure, application configuration, branding customization information."
   ],
   "privacy.sections.usage": [
     "Providing identity authentication and access management services.",
@@ -267,9 +266,12 @@
     "Right to withdraw consent: withdraw previously given consent at any time."
   ],
   "privacy.sections.cookies": [
-    "We use essential cookies to maintain service operations (e.g., session persistence, security tokens).",
-    "Analytics cookies are used solely to improve product experience and are not used for cross-site tracking.",
-    "You can manage cookie preferences through browser settings, but disabling essential cookies may affect service usage."
+    "Autional uses only strictly necessary security cookies for sign-in and account security. We do not use analytics, advertising, or marketing cookies.",
+    "__Host-did: trusted-device identifier (HttpOnly, Secure, SameSite=Lax, up to 400 days). It remembers trusted devices to avoid repeated MFA; it is not used for advertising or cross-site tracking.",
+    "oauth_bind_state: anti-CSRF state for third-party account binding (HttpOnly, SameSite=Lax, up to 10 minutes). It is cleared immediately after binding.",
+    "If SAML single sign-on is enabled, a SAML session cookie is used only within the SAML flow.",
+    "Language, theme, and similar preferences are stored in browser localStorage, not in cookies.",
+    "These cookies are strictly necessary and do not require consent. You can delete them through your browser settings, but sign-in or trusted-device features may stop working."
   ],
   "privacy.device.title": "Device Data Privacy",
   "privacy.device.subtitle": "What the Autional Authenticator processes on your devices — and how we protect it.",
