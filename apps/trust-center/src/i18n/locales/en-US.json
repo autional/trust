@@ -265,6 +265,7 @@
   "privacy.sections.retention": [
     "Account data is retained for the lifetime of the account; after account deletion, it is deleted within 30 days, with backups expiring within 30 days (not available for user recovery).",
     "Audit logs are retained as required by applicable regulations (180 days online + 7 years archived).",
+    "Security event logs are retained for 12 months.",
     "Support/privacy emails are retained for 2 years.",
     "You may request deletion of your personal data at any time (GDPR right to erasure / China Personal Information Protection Law)."
   ],
