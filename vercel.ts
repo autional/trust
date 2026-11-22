@@ -20,6 +20,9 @@ if (!rawOrigin) {
 
 const ORIGIN = rawOrigin.replace(/\/+$/, '');
 
+const NO_CACHE = 'public, max-age=0, must-revalidate';
+const IMMUTABLE = 'public, max-age=31536000, immutable';
+
 /**
  * 令牌入口兜底（2026-11-08，缺陷 F5 改造）。
  *
@@ -73,8 +76,14 @@ export const config: VercelConfig = {
 	outputDirectory: 'apps/trust-center/dist',
 	headers: [
 		// 兜底壳（/spa.html）可被直接访问：不带 canonical，标 noindex 免得被当成独立页收录。
-		routes.header('/spa.html', [{ key: 'X-Robots-Tag', value: 'noindex' }]),
+		routes.header('/spa.html', [
+			{ key: 'X-Robots-Tag', value: 'noindex' },
+			{ key: 'Cache-Control', value: NO_CACHE },
+		]),
 		routes.header('/(.*)', SECURITY_HEADERS),
+		// hashed 资产一年 immutable；HTML/env 每次回源验证。此前缺失导致回访全量重验。
+		routes.header('/assets/(.*)', [{ key: 'Cache-Control', value: IMMUTABLE }]),
+		routes.header('/env.js', [{ key: 'Cache-Control', value: NO_CACHE }]),
 	],
 	rewrites: [
 		routes.rewrite('/bff/:path*', `${ORIGIN}/bff/:path*`),
