@@ -263,7 +263,7 @@
     "You can always learn about your data storage location and cross-border transfer status."
   ],
   "privacy.sections.retention": [
-    "Account data is retained for the lifetime of the account; after account deletion, it is deleted within 30 days, with backups expiring within 30 days (not available for user recovery).",
+    "Account data is retained for the lifetime of the account; after account deletion, it is deleted from live systems within 30 days. Encrypted backups are retained for up to 90 days for disaster recovery and expire automatically; they are not used to restore deleted users.",
     "Audit logs are retained as required by applicable regulations (180 days online + 7 years archived).",
     "Security event logs are retained for 12 months.",
     "Support/privacy emails are retained for 2 years.",
