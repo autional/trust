@@ -124,7 +124,7 @@
   "dataResidency.transparency": "数据存储位置透明",
   "dataResidency.transparencyDesc": "我们公开数据的存储区域，并在区域变更前通知客户。",
   "dataResidency.noCrossBorder": "数据存储于中国大陆",
-  "dataResidency.noCrossBorderDesc": "对于中国大陆租户，业务数据存储于境内数据中心；公开入口经香港节点与 Vercel 边缘转发，涉及跨境传输，我们采用标准合同条款或单独同意等机制。",
+  "dataResidency.noCrossBorderDesc": "对于中国大陆租户，业务数据存储于境内数据中心；公开入口经香港节点转发，涉及跨境传输，我们采用标准合同条款或单独同意等机制。",
   "dataResidency.crossBorderCompliance": "跨境传输合规",
   "dataResidency.crossBorderComplianceDesc": "如确需跨境传输，我们将事先取得您的明确授权，并采用适用法律认可的合法机制。",
   "dataResidency.retention": "数据保留与删除",
@@ -254,7 +254,7 @@
   "privacy.sections.sharing": [
     "我们从不向第三方出售您的个人数据。",
     "仅在以下情形共享数据：(a) 获得您的明确授权；(b) 为提供服务所必需的合作方（如云基础设施提供商）；(c) 法律法规要求。",
-    "子处理商按服务条款适用 DPA/SCC；Vercel Hobby 无 DPA 的缺口正在迁移修复；其余自动适用。"
+    "子处理商按服务条款适用 DPA/SCC；Vercel 已于 2026-11-22 迁出，当前 4 家均自动适用。"
   ],
   "privacy.sections.crossBorder": [
     "默认情况下，数据存储于您选择的地理区域（见数据驻留页面）。",

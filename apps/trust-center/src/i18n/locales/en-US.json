@@ -124,7 +124,7 @@
   "dataResidency.transparency": "Transparent Data Storage Locations",
   "dataResidency.transparencyDesc": "We disclose the region where data is stored, and notify customers before any region change.",
   "dataResidency.noCrossBorder": "Data Stored in Mainland China",
-  "dataResidency.noCrossBorderDesc": "For tenants in mainland China, business data is stored in domestic data centres. Public entry points are forwarded through our Hong Kong node and Vercel edge, which involves cross-border transfer; we rely on Standard Contractual Clauses or separate consent.",
+  "dataResidency.noCrossBorderDesc": "For tenants in mainland China, business data is stored in domestic data centres. Public entry points are forwarded through our Hong Kong node, which involves cross-border transfer; we rely on Standard Contractual Clauses or separate consent.",
   "dataResidency.crossBorderCompliance": "Compliant Cross-Border Transfers",
   "dataResidency.crossBorderComplianceDesc": "If a cross-border transfer is ever required, we will obtain your explicit authorisation in advance and rely on a lawful mechanism recognised by applicable law.",
   "dataResidency.retention": "Data Retention & Deletion",
@@ -254,7 +254,7 @@
   "privacy.sections.sharing": [
     "We never sell your personal data to third parties.",
     "Data is shared only under the following circumstances: (a) with your explicit authorization; (b) with partners necessary for service delivery (e.g., cloud infrastructure providers); (c) as required by law or regulation.",
-    "Subprocessors are bound by DPAs/SCCs under their service terms; the Vercel Hobby DPA gap is being remediated by migration; the others apply automatically."
+    "Subprocessors are bound by DPAs/SCCs under their service terms; Vercel migrated out on 2026-11-22, and the remaining four apply automatically."
   ],
   "privacy.sections.crossBorder": [
     "By default, data is stored in the geographic region of your choice (see Data Residency page).",
